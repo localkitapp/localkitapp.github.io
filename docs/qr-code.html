@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QR Generator — localkit Docs</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <nav>
+    <a class="nav-brand" href="../index.html">
+      <svg class="nav-logo" viewBox="0 0 24 24" fill="none">
+        <rect x="3"  y="3"  width="8" height="8" rx="1.5" fill="#7c6af7"/>
+        <rect x="13" y="3"  width="8" height="8" rx="1.5" fill="#4a3fb5"/>
+        <rect x="3"  y="13" width="8" height="8" rx="1.5" fill="#4a3fb5"/>
+        <rect x="13" y="13" width="8" height="8" rx="1.5" fill="#7c6af7"/>
+      </svg>
+      <span class="nav-name">localkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="../docs.html">← All tools</a>
+      <a href="../privacy.html">Privacy</a>
+      <a class="nav-cta" href="https://chrome.google.com/webstore" target="_blank">Add to Chrome</a>
+    </div>
+  </nav>
+  <div class="page">
+    <div class="doc-header">
+      <span class="doc-badge badge-free">Free tool</span>
+      <h1>Generate QR codes for anything</h1>
+      <p>Create QR codes for URLs, plain text, WiFi credentials and email addresses. Customise size, colours and error correction. Download as PNG or SVG, or copy to clipboard.</p>
+    </div>
+    <div class="doc-body">
+<h2>Content types</h2>
+<table class="doc-table">
+  <thead><tr><th>Type</th><th>Fields</th><th>Use case</th></tr></thead>
+  <tbody>
+    <tr><td>URL</td><td>URL (https:// auto-added)</td><td>Share links, websites</td></tr>
+    <tr><td>Text</td><td>Any text</td><td>Messages, codes, IDs</td></tr>
+    <tr><td>WiFi</td><td>SSID, password, security type, hidden</td><td>Share WiFi without typing</td></tr>
+    <tr><td>Email</td><td>To, Subject, Body</td><td>Pre-filled email links</td></tr>
+  </tbody>
+</table>
+<h2>WiFi QR codes</h2>
+<p>WiFi QR codes follow the standard <code>WIFI:T:WPA;S:ssid;P:password;H:false;;</code> format. Android and iOS can scan these to connect automatically without typing a password.</p>
+<div class="info-box tip">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+  <div>For WPA2/WPA3 networks select <strong>WPA</strong>. For open networks with no password select <strong>None</strong>.</div>
+</div>
+<h2>Settings</h2>
+<table class="doc-table">
+  <thead><tr><th>Setting</th><th>Options</th></tr></thead>
+  <tbody>
+    <tr><td>Size</td><td>128–512px in 32px steps</td></tr>
+    <tr><td>Error correction</td><td>L (7%), M (15%), Q (25%), H (30%)</td></tr>
+    <tr><td>Foreground colour</td><td>Any colour via picker</td></tr>
+    <tr><td>Background colour</td><td>Any colour via picker</td></tr>
+  </tbody>
+</table>
+<h2>Error correction</h2>
+<p>Higher error correction means the QR code can still be scanned even if part of it is damaged or obscured — but it also makes the code denser. Use <strong>H</strong> if you plan to print and the code might get worn.</p>
+<h2>Download formats</h2>
+<ul>
+  <li><strong>PNG</strong> — raster image, best for digital use</li>
+  <li><strong>SVG</strong> — scalable vector, best for print or large displays</li>
+  <li><strong>Copy</strong> — copies PNG to clipboard for immediate pasting</li>
+</ul>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../docs.html">Docs</a>
+      <a href="../privacy.html">Privacy</a>
+      <a href="mailto:devthetoolbuilder@gmail.com">Support</a>
+    </div>
+    <div>© 2026 Localkit</div>
+  </footer>
+</body>
+</html>

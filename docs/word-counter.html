@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Word Counter — localkit Docs</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <nav>
+    <a class="nav-brand" href="../index.html">
+      <svg class="nav-logo" viewBox="0 0 24 24" fill="none">
+        <rect x="3"  y="3"  width="8" height="8" rx="1.5" fill="#7c6af7"/>
+        <rect x="13" y="3"  width="8" height="8" rx="1.5" fill="#4a3fb5"/>
+        <rect x="3"  y="13" width="8" height="8" rx="1.5" fill="#4a3fb5"/>
+        <rect x="13" y="13" width="8" height="8" rx="1.5" fill="#7c6af7"/>
+      </svg>
+      <span class="nav-name">localkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="../docs.html">← All tools</a>
+      <a href="../privacy.html">Privacy</a>
+      <a class="nav-cta" href="https://chrome.google.com/webstore" target="_blank">Add to Chrome</a>
+    </div>
+  </nav>
+  <div class="page">
+    <div class="doc-header">
+      <span class="doc-badge badge-free">Free tool</span>
+      <h1>Instant text statistics</h1>
+      <p>Paste any text and see words, characters, sentences, reading time, top words and platform character limits — all updating live as you type.</p>
+    </div>
+    <div class="doc-body">
+<h2>Stats included</h2>
+<table class="doc-table">
+  <thead><tr><th>Stat</th><th>How calculated</th></tr></thead>
+  <tbody>
+    <tr><td>Words</td><td>Split on whitespace, empty tokens filtered</td></tr>
+    <tr><td>Characters</td><td>Raw string length including spaces</td></tr>
+    <tr><td>No spaces</td><td>Characters after stripping all whitespace</td></tr>
+    <tr><td>Sentences</td><td>Segments ending in . ! or ?</td></tr>
+    <tr><td>Paragraphs</td><td>Blocks separated by double newline</td></tr>
+    <tr><td>Lines</td><td>Total line count</td></tr>
+    <tr><td>Avg word length</td><td>Letters only, averaged across all words</td></tr>
+    <tr><td>Longest word</td><td>Longest token by character count</td></tr>
+    <tr><td>Unique words</td><td>Case-insensitive deduplication</td></tr>
+    <tr><td>Reading time</td><td>238 words per minute average</td></tr>
+    <tr><td>Speaking time</td><td>150 words per minute average</td></tr>
+  </tbody>
+</table>
+<h2>Platform limits</h2>
+<p>Live progress bars show how close your text is to each platform limit. The bar turns red when you exceed the limit.</p>
+<table class="doc-table">
+  <thead><tr><th>Platform</th><th>Limit</th></tr></thead>
+  <tbody>
+    <tr><td>Twitter / X</td><td>280 characters</td></tr>
+    <tr><td>LinkedIn post</td><td>3,000 characters</td></tr>
+    <tr><td>Instagram bio</td><td>150 characters</td></tr>
+    <tr><td>Meta description</td><td>160 characters</td></tr>
+  </tbody>
+</table>
+<h2>Selection counter</h2>
+<p>Select any portion of text in the input area to see the word and character count for just that selection in the status bar at the bottom.</p>
+<h2>Keyboard shortcuts</h2>
+<table class="doc-table">
+  <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+  <tbody>
+    <tr><td><kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd></td><td>Clear all text</td></tr>
+  </tbody>
+</table>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../docs.html">Docs</a>
+      <a href="../privacy.html">Privacy</a>
+      <a href="mailto:devthetoolbuilder@gmail.com">Support</a>
+    </div>
+    <div>© 2026 Localkit</div>
+  </footer>
+</body>
+</html>
