@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Text Cleaner — localkit Docs</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <nav>
+    <a class="nav-brand" href="../index.html">
+      <svg class="nav-logo" viewBox="0 0 24 24" fill="none">
+        <rect x="3"  y="3"  width="8" height="8" rx="1.5" fill="#7c6af7"/>
+        <rect x="13" y="3"  width="8" height="8" rx="1.5" fill="#4a3fb5"/>
+        <rect x="3"  y="13" width="8" height="8" rx="1.5" fill="#4a3fb5"/>
+        <rect x="13" y="13" width="8" height="8" rx="1.5" fill="#7c6af7"/>
+      </svg>
+      <span class="nav-name">localkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="../docs.html">← All tools</a>
+      <a href="../privacy.html">Privacy</a>
+      <a class="nav-cta" href="https://chrome.google.com/webstore" target="_blank">Add to Chrome</a>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <div class="doc-header">
+      <span class="doc-badge badge-pro">Pro tool — $9 one-time</span>
+      <h1>Strip formatting and fix messy text</h1>
+      <p>Text copied from PDFs, Word documents and emails often contains hidden formatting, smart quotes, em dashes and zero-width characters. Text Cleaner removes all of it instantly.</p>
+    </div>
+
+    <div class="doc-body">
+
+      <h2>Operations</h2>
+
+      <h3>Whitespace</h3>
+      <ul>
+        <li><strong>Trim each line</strong> — strips leading and trailing spaces from every line</li>
+        <li><strong>Remove extra spaces</strong> — collapses multiple consecutive spaces to one</li>
+        <li><strong>Remove blank lines</strong> — strips empty lines completely</li>
+        <li><strong>Tabs → spaces</strong> — converts tab characters to 4 spaces</li>
+      </ul>
+
+      <h3>Characters</h3>
+      <ul>
+        <li><strong>Fix smart quotes</strong> — converts curly quotes to straight quotes</li>
+        <li><strong>Em dash → hyphen</strong> — converts — and – to -</li>
+        <li><strong>Ellipsis char</strong> — converts … to ...</li>
+        <li><strong>Remove zero-width chars</strong> — removes invisible Unicode (common in copy-pasted text)</li>
+        <li><strong>Remove non-ASCII</strong> — strips everything above ASCII 126</li>
+      </ul>
+
+      <h3>Lines</h3>
+      <ul>
+        <li><strong>Sort lines A→Z</strong> — alphabetical sort</li>
+        <li><strong>Remove duplicate lines</strong> — case-insensitive deduplication</li>
+        <li><strong>Reverse line order</strong> — flips the order of all lines</li>
+        <li><strong>Number each line</strong> — prepends 1. 2. 3. to each line</li>
+      </ul>
+
+      <h3>Case</h3>
+      <p>Apply directly to the input: lowercase, UPPERCASE, Title Case, Sentence case.</p>
+
+      <h2>Quick presets</h2>
+
+      <table class="doc-table">
+        <thead><tr><th>Preset</th><th>Enables</th></tr></thead>
+        <tbody>
+          <tr><td>Clean PDF text</td><td>Trim, extra spaces, smart quotes, em dashes, ellipsis, zero-width</td></tr>
+          <tr><td>Clean Word/Doc</td><td>All of the above + remove blank lines + tabs to spaces</td></tr>
+          <tr><td>Clean email</td><td>Trim, extra spaces, blank lines, smart quotes, zero-width</td></tr>
+          <tr><td>Plain text only</td><td>Smart quotes, em dashes, ellipsis, zero-width, non-ASCII</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Keyboard shortcut</h2>
+
+      <table class="doc-table">
+        <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Enter</kbd></td><td>Clean text</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <div>Use <strong>Use as input</strong> to move the cleaned output back into the input for a second pass — useful for chaining multiple cleaning operations.</div>
+      </div>
+
+      <div class="info-box note" style="margin-top:32px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <div>This is a <strong>Pro tool</strong>. Upgrade once for $9 to unlock all Pro tools permanently. <a href="../index.html">Get Pro →</a></div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../docs.html">Docs</a>
+      <a href="../privacy.html">Privacy</a>
+      <a href="mailto:support@localkit.app">Support</a>
+    </div>
+    <div>© 2025 localkit</div>
+  </footer>
+</body>
+</html>

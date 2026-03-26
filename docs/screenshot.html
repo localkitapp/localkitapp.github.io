@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Screenshot — localkit Docs</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <nav>
+    <a class="nav-brand" href="../index.html">
+      <svg class="nav-logo" viewBox="0 0 24 24" fill="none">
+        <rect x="3"  y="3"  width="8" height="8" rx="1.5" fill="#7c6af7"/>
+        <rect x="13" y="3"  width="8" height="8" rx="1.5" fill="#4a3fb5"/>
+        <rect x="3"  y="13" width="8" height="8" rx="1.5" fill="#4a3fb5"/>
+        <rect x="13" y="13" width="8" height="8" rx="1.5" fill="#7c6af7"/>
+      </svg>
+      <span class="nav-name">localkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="../docs.html">← All tools</a>
+      <a href="../privacy.html">Privacy</a>
+      <a class="nav-cta" href="https://chrome.google.com/webstore" target="_blank">Add to Chrome</a>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <div class="doc-header">
+      <span class="doc-badge badge-free">Free tool</span>
+      <div class="doc-eyebrow">Screenshot</div>
+      <h1>Capture any browser tab</h1>
+      <p>Capture the visible area of any open browser tab. Download as PNG or JPEG, or copy directly to clipboard. Nothing is uploaded — capture runs entirely via Chrome's built-in tab capture API.</p>
+    </div>
+
+    <div class="doc-body">
+
+      <h2>How to use</h2>
+
+      <div class="step-list">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Select a target tab</div>
+            <div class="step-desc">The tab list loads automatically. The most recently active tab is pre-selected. Click any tab to switch the target.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Choose format</div>
+            <div class="step-desc">PNG for lossless quality. JPEG for smaller file size — use the quality slider to balance size and clarity.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Click Capture Tab</div>
+            <div class="step-desc">localkit briefly switches to your target tab, captures the visible viewport, then returns focus to the dashboard automatically.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Download or copy</div>
+            <div class="step-desc">Download as a timestamped file, or copy directly to clipboard to paste into any app.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <div>Use <strong>Capture Again</strong> to re-capture the same tab with updated settings without re-selecting it.</div>
+      </div>
+
+      <h2>Settings</h2>
+
+      <table class="doc-table">
+        <thead><tr><th>Setting</th><th>Options</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Format</td><td>PNG, JPEG</td><td>PNG is lossless. JPEG is smaller.</td></tr>
+          <tr><td>Quality</td><td>1–100%</td><td>JPEG only. 90%+ recommended for most uses.</td></tr>
+          <tr><td>Zoom</td><td>25%–300%</td><td>Preview zoom only — does not affect the captured file.</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Keyboard shortcuts</h2>
+
+      <table class="doc-table">
+        <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>+</kbd> / <kbd>=</kbd></td><td>Zoom in preview</td></tr>
+          <tr><td><kbd>-</kbd></td><td>Zoom out preview</td></tr>
+          <tr><td><kbd>0</kbd></td><td>Reset zoom to 100%</td></tr>
+          <tr><td><kbd>Ctrl</kbd> + scroll</td><td>Zoom in/out with mouse wheel</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Limitations</h2>
+
+      <div class="info-box warn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div>
+          <strong>Browser-restricted pages cannot be captured.</strong> This includes chrome:// pages, the Chrome Web Store, and the extension's own dashboard tab. Only regular website tabs can be captured.
+        </div>
+      </div>
+
+      <ul>
+        <li>Captures the <strong>visible viewport only</strong> — not the full scrollable page</li>
+        <li>Minimised windows cannot be captured — restore the window first</li>
+        <li>Clipboard copy converts JPEG to PNG (browsers only support PNG on clipboard)</li>
+      </ul>
+
+      <h2>Pro: Screenshot Annotate</h2>
+
+      <p>After capturing, Pro users see an <strong>Annotate</strong> button. This opens a full-screen annotation editor with 8 tools — pen, arrow, rectangle, ellipse, text, blur/redact, highlight and select. Supports undo/redo up to 50 states.</p>
+
+      <a class="btn-secondary" href="annotate.html" style="display:inline-flex;margin-top:8px;">
+        View Annotate docs →
+      </a>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../docs.html">Docs</a>
+      <a href="../privacy.html">Privacy</a>
+      <a href="mailto:support@localkit.app">Support</a>
+    </div>
+    <div>© 2025 localkit</div>
+  </footer>
+
+</body>
+</html>
