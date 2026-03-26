@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>localkit — Personal utilities that run locally</title>
+  <meta name="description" content="7 personal utilities that run entirely in your browser. Screenshot, PDF merge, image compression, notes, passwords, word counter and QR codes. Nothing uploaded." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <nav>
+    <a class="nav-brand" href="index.html">
+      <svg class="nav-logo" viewBox="0 0 24 24" fill="none">
+        <rect x="3"  y="3"  width="8" height="8" rx="1.5" fill="#7c6af7"/>
+        <rect x="13" y="3"  width="8" height="8" rx="1.5" fill="#4a3fb5"/>
+        <rect x="3"  y="13" width="8" height="8" rx="1.5" fill="#4a3fb5"/>
+        <rect x="13" y="13" width="8" height="8" rx="1.5" fill="#7c6af7"/>
+      </svg>
+      <span class="nav-name">localkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="docs.html">Docs</a>
+      <a href="privacy.html">Privacy</a>
+      <a class="nav-cta" href="https://chrome.google.com/webstore" target="_blank">
+        Add to Chrome
+      </a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <div class="hero-eyebrow">Free Chrome Extension</div>
+    <h1>Tools that work<br /><span>without the cloud</span></h1>
+    <p>Screenshot, merge PDFs, compress images, generate passwords and more — all running locally in your browser. Nothing uploaded. Works offline.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="https://chrome.google.com/webstore" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="4"/>
+          <line x1="21.17" y1="8" x2="12" y2="8"/>
+          <line x1="3.95"  y1="6.06" x2="8.54" y2="14"/>
+          <line x1="10.88" y1="21.94" x2="15.46" y2="14"/>
+        </svg>
+        Add to Chrome — Free
+      </a>
+      <a class="btn-secondary" href="docs.html">
+        View all tools →
+      </a>
+    </div>
+    <div class="privacy-note">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+      100% local · no account · no tracking · open to inspect
+    </div>
+  </div>
+
+  <!-- ── Feature strip ── -->
+  <div class="page-wide">
+    <div class="feature-strip">
+      <div class="feature-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <div class="feature-item-title">Nothing leaves your device</div>
+        <div class="feature-item-desc">Every tool uses browser APIs — Canvas, Web Crypto, localStorage. Zero network requests for your data.</div>
+      </div>
+      <div class="feature-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        <div class="feature-item-title">Works offline</div>
+        <div class="feature-item-desc">No internet connection required after install. Use it on a plane, in a meeting, anywhere.</div>
+      </div>
+      <div class="feature-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M9 9h6M9 12h6M9 15h4"/>
+        </svg>
+        <div class="feature-item-title">No account needed</div>
+        <div class="feature-item-desc">Install and use immediately. No sign-up, no email, no subscription to start.</div>
+      </div>
+    </div>
+
+    <!-- ── Tools ── -->
+    <div class="section-label">Free tools</div>
+
+    <div class="tool-grid">
+
+      <a class="tool-card" href="docs/screenshot.html">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">Screenshot</div>
+        <div class="tool-card-desc">Capture any browser tab instantly. Download as PNG or JPEG, or copy to clipboard.</div>
+        <span class="tool-card-badge badge-free">Free</span>
+      </a>
+
+      <a class="tool-card" href="docs/pdf-merge.html">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <line x1="9"  y1="15" x2="15" y2="15"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">PDF Merge</div>
+        <div class="tool-card-desc">Combine up to 3 PDFs into one. Drag to reorder pages. Preview before merging.</div>
+        <span class="tool-card-badge badge-free">Free · 3 files</span>
+      </a>
+
+      <a class="tool-card" href="docs/image-compressor.html">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">Image Compressor</div>
+        <div class="tool-card-desc">Compress JPEG, PNG and WebP using Canvas API. Before/after drag slider to compare.</div>
+        <span class="tool-card-badge badge-free">Free</span>
+      </a>
+
+      <a class="tool-card" href="docs/quick-notes.html">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">Quick Notes</div>
+        <div class="tool-card-desc">A persistent scratchpad. Pin, search, auto-save. No account, no sync, no cloud.</div>
+        <span class="tool-card-badge badge-free">Free</span>
+      </a>
+
+      <a class="tool-card" href="docs/password-generator.html">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="11" width="18" height="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">Password Generator</div>
+        <div class="tool-card-desc">Cryptographically secure passwords via Web Crypto API. Strength meter, history.</div>
+        <span class="tool-card-badge badge-free">Free</span>
+      </a>
+
+      <a class="tool-card" href="docs/word-counter.html">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <line x1="17" y1="10" x2="3" y2="10"/>
+            <line x1="21" y1="6"  x2="3" y2="6"/>
+            <line x1="21" y1="14" x2="3" y2="14"/>
+            <line x1="17" y1="18" x2="3" y2="18"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">Word Counter</div>
+        <div class="tool-card-desc">Words, characters, reading time, top words, platform limits — all instant.</div>
+        <span class="tool-card-badge badge-free">Free</span>
+      </a>
+
+      <a class="tool-card" href="docs/qr-code.html">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3"  y="3"  width="7" height="7" rx="1"/>
+            <rect x="14" y="3"  width="7" height="7" rx="1"/>
+            <rect x="3"  y="14" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="3" height="3"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">QR Generator</div>
+        <div class="tool-card-desc">URL, text, WiFi credentials, email. Custom colours, download PNG or SVG.</div>
+        <span class="tool-card-badge badge-free">Free</span>
+      </a>
+
+    </div>
+
+    <!-- Pro tools -->
+    <div class="section-label" style="margin-top:40px;">Pro tools — $9 one-time</div>
+
+    <div class="tool-grid">
+
+      <a class="tool-card" href="docs/pdf-split.html">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <line x1="21" y1="3" x2="3" y2="21"/>
+            <polyline points="21 3 21 10 14 3"/>
+            <polyline points="3 21 3 14 10 21"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">PDF Split</div>
+        <div class="tool-card-desc">Extract specific pages or split every page into a separate file.</div>
+        <span class="tool-card-badge badge-pro">Pro</span>
+      </a>
+
+      <a class="tool-card" href="docs/annotate.html">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">Screenshot Annotate</div>
+        <div class="tool-card-desc">Draw, highlight, blur and add arrows directly on your screenshots.</div>
+        <span class="tool-card-badge badge-pro">Pro</span>
+      </a>
+
+      <a class="tool-card" href="docs/image-to-pdf.html">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">Image to PDF</div>
+        <div class="tool-card-desc">Convert multiple images into a single PDF. A4, Letter, or fit to image.</div>
+        <span class="tool-card-badge badge-pro">Pro</span>
+      </a>
+
+      <a class="tool-card" href="docs/image-tools.html">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <polyline points="15 3 21 3 21 9"/>
+            <polyline points="9 21 3 21 3 15"/>
+            <line x1="21" y1="3" x2="14" y2="10"/>
+            <line x1="3"  y1="21" x2="10" y2="14"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">Image Tools</div>
+        <div class="tool-card-desc">Batch resize by width, height, percent or exact size. Bulk format conversion.</div>
+        <span class="tool-card-badge badge-pro">Pro</span>
+      </a>
+
+      <a class="tool-card" href="docs/text-cleaner.html">
+        <div class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <polyline points="4 7 4 4 20 4 20 7"/>
+            <line x1="9" y1="20" x2="15" y2="20"/>
+            <line x1="12" y1="4" x2="12" y2="20"/>
+          </svg>
+        </div>
+        <div class="tool-card-name">Text Cleaner</div>
+        <div class="tool-card-desc">Strip formatting, fix smart quotes, remove invisible characters, sort lines.</div>
+        <span class="tool-card-badge badge-pro">Pro</span>
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="docs.html">Docs</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:support@localkit.app">Support</a>
+      <a href="https://chrome.google.com/webstore" target="_blank">Chrome Store</a>
+    </div>
+    <div>© 2025 localkit · Built with no tracking, no BS</div>
+  </footer>
+
+</body>
+</html>

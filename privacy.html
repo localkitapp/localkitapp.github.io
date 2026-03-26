@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy — localkit</title>
+  <meta name="description" content="localkit privacy policy. We collect no data. Everything runs locally." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav>
+    <a class="nav-brand" href="index.html">
+      <svg class="nav-logo" viewBox="0 0 24 24" fill="none">
+        <rect x="3"  y="3"  width="8" height="8" rx="1.5" fill="#7c6af7"/>
+        <rect x="13" y="3"  width="8" height="8" rx="1.5" fill="#4a3fb5"/>
+        <rect x="3"  y="13" width="8" height="8" rx="1.5" fill="#4a3fb5"/>
+        <rect x="13" y="13" width="8" height="8" rx="1.5" fill="#7c6af7"/>
+      </svg>
+      <span class="nav-name">localkit</span>
+    </a>
+    <div class="nav-links">
+      <a href="docs.html">Docs</a>
+      <a href="privacy.html" style="color:var(--text)">Privacy</a>
+      <a class="nav-cta" href="https://chrome.google.com/webstore" target="_blank">Add to Chrome</a>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <div class="doc-header">
+      <div class="doc-eyebrow">Legal</div>
+      <h1>Privacy Policy</h1>
+      <p>Last updated: January 2025</p>
+    </div>
+
+    <div class="doc-body">
+
+      <div class="info-box tip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <div><strong>Short version:</strong> localkit collects no data, sends nothing to any server, and stores nothing outside your own device. Ever.</div>
+      </div>
+
+      <h2>Data collection</h2>
+
+      <p>localkit collects no personal data of any kind. There are no analytics, no crash reporting, no usage tracking and no telemetry of any kind included in this extension.</p>
+
+      <p>We do not know how many people use localkit, which tools they use, or anything about how the extension is used. This is a deliberate choice, not an oversight.</p>
+
+      <h2>Files and content</h2>
+
+      <p>Any files you open or process with localkit — PDFs, images, text — are processed entirely within your browser using built-in browser APIs. No file content is transmitted to any server at any time. Files are read from your local filesystem, processed in memory, and the result is returned to you directly.</p>
+
+      <h2>Permissions explained</h2>
+
+      <table class="doc-table">
+        <thead><tr><th>Permission</th><th>Why it's needed</th><th>What we do with it</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>tabs</td>
+            <td>Screenshot tool needs to list open browser tabs</td>
+            <td>Tab titles and URLs are read locally and never transmitted</td>
+          </tr>
+          <tr>
+            <td>activeTab</td>
+            <td>Capture the visible content of the active tab when you click Capture</td>
+            <td>Screenshot data stays in memory and is never uploaded</td>
+          </tr>
+          <tr>
+            <td>scripting</td>
+            <td>Required by Chrome Manifest V3 for tab capture functionality</td>
+            <td>No scripts are injected into websites</td>
+          </tr>
+          <tr>
+            <td>windows</td>
+            <td>Focus the correct browser window during screenshot capture</td>
+            <td>Window state is read locally, never stored or transmitted</td>
+          </tr>
+          <tr>
+            <td>storage</td>
+            <td>Store your Pro license key and the last active tool</td>
+            <td>Stored locally in chrome.storage.local, never sent anywhere</td>
+          </tr>
+          <tr>
+            <td>host_permissions (&lt;all_urls&gt;)</td>
+            <td>Chrome requires this for captureVisibleTab to work on any website</td>
+            <td>No page content is read. Only used for screenshot capture.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Local storage</h2>
+
+      <p><strong>Quick Notes</strong> uses your browser's localStorage to save notes on your device. This data never leaves your device. Clearing browser data for the extension will delete your notes.</p>
+
+      <p><strong>Pro license key</strong> is stored in chrome.storage.local after successful verification. It is used only to check Pro status locally — it is never transmitted except during initial Gumroad verification when you first activate.</p>
+
+      <h2>Pro license verification</h2>
+
+      <p>When you activate a Pro license key, localkit makes a single request to Gumroad's API to verify the key. This request includes your license key and the product ID. No other information is sent. After verification, the result is cached locally and re-verified silently every 30 days.</p>
+
+      <p>If Gumroad is unreachable during re-verification, your Pro status remains active — we never revoke access due to a network error.</p>
+
+      <h2>Third-party libraries</h2>
+
+      <p>localkit bundles the following open-source libraries. All run locally and make no network requests:</p>
+
+      <ul>
+        <li><strong>qrcode.min.js</strong> (qrcodejs) — QR code generation</li>
+        <li><strong>pdf-lib.min.js</strong> — PDF creation and manipulation</li>
+        <li><strong>pdf.min.js + pdf.worker.min.js</strong> (PDF.js, Mozilla) — PDF rendering and page preview</li>
+      </ul>
+
+      <h2>This website</h2>
+
+      <p>This website (localkit.app) is hosted on GitHub Pages. GitHub may collect standard server access logs (IP address, user agent, referring URL) as part of their hosting service. We do not control this and do not access these logs. See <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank">GitHub's privacy statement</a> for details.</p>
+
+      <p>This website uses no analytics, no cookies and no tracking scripts.</p>
+
+      <h2>Changes to this policy</h2>
+
+      <p>If this policy changes, the updated date at the top of this page will reflect the change. We will not introduce data collection without explicit notice.</p>
+
+      <h2>Contact</h2>
+
+      <p>Questions about this privacy policy: <a href="mailto:support@localkit.app">support@localkit.app</a></p>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="docs.html">Docs</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="mailto:support@localkit.app">Support</a>
+    </div>
+    <div>© 2025 localkit</div>
+  </footer>
+
+</body>
+</html>
