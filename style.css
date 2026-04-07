@@ -558,3 +558,124 @@ footer a:hover { color: var(--text); }
   margin-bottom: 10px;
   flex-wrap: wrap;
 }
+
+
+
+/* ── Demo embed wrapper ─────────────────────────── */
+.demo-embed {
+  margin: 36px auto 44px;
+  max-width: 860px;
+}
+
+/* Browser chrome mockup */
+.demo-browser {
+  background: #0b0c10;
+  border: 1px solid #2c303f;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(200,240,74,0.06),
+    0 24px 60px rgba(0,0,0,0.55),
+    0 8px 24px rgba(0,0,0,0.4);
+}
+
+/* Top bar — traffic lights + fake URL bar */
+.demo-bar {
+  height: 38px;
+  background: #13151c;
+  border-bottom: 1px solid #2c303f;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.demo-dots {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.demo-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.demo-dot-r { background: #ff5f57; }
+.demo-dot-y { background: #febc2e; }
+.demo-dot-g { background: #28c840; }
+
+.demo-url {
+  flex: 1;
+  height: 22px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid #2c303f;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 6px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.demo-url-lock {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  opacity: 0.4;
+}
+
+.demo-url-text {
+  font-size: 11px;
+  color: #50566e;
+  font-family: 'DM Mono', monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The iframe itself */
+.demo-frame {
+  width: 100%;
+  /* 16:10 aspect ratio — desktop feel */
+  aspect-ratio: 16 / 10;
+  border: none;
+  display: block;
+  background: #0b0c10;
+  /* landscape reels: use full width */
+}
+
+/* Portrait reels (QR, Screenshot) — centred with side padding */
+.demo-embed.portrait .demo-frame {
+  /* 9:16 reel centred in a 16:10 window */
+  aspect-ratio: 16 / 10;
+}
+
+/* Caption below */
+.demo-caption {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 11.5px;
+  color: #50566e;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.05em;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .demo-embed {
+    margin: 24px auto 32px;
+  }
+  .demo-bar {
+    height: 32px;
+    padding: 0 10px;
+    gap: 8px;
+  }
+  .demo-dot {
+    width: 8px;
+    height: 8px;
+  }
+}

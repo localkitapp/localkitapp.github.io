@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>LocalKit Text Cleaner — Desktop Reel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Figtree:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#07060d;--bg2:#0e0c1a;--bg3:#161226;--bg4:#1e1a32;--edge:#2d2850;--edgeb:#3d3870;--text:#e8e6f8;--muted:#8884b8;--dim:#514d7a;--purple:#7c6af7;--purp2:#9b8cff;--purp3:#4a3fb5;--teal:#3dd9c4;--rose:#f75d8a;--gold:#ffd166;--green:#4ade80;--serif:'DM Serif Display',serif;--sans:'Figtree',sans-serif;--mono:'DM Mono',monospace;}
+html,body{width:100%;min-height:100vh;background:#04030a;display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:var(--sans);}
+.stage{position:relative;width:960px;height:540px;flex-shrink:0;overflow:hidden;border-radius:20px;box-shadow:0 0 0 1px rgba(124,106,247,0.15),0 40px 100px rgba(0,0,0,0.9),0 0 80px rgba(124,106,247,0.10);transform-origin:center;}
+.scene{position:absolute;inset:0;display:flex;align-items:center;opacity:0;pointer-events:none;}
+.scene.active{opacity:1;pointer-events:all;}
+.s-bg{position:absolute;inset:0;}.s-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(124,106,247,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,106,247,0.04) 1px,transparent 1px);background-size:36px 36px;}
+.particle{position:absolute;border-radius:50%;background:var(--purple);opacity:0;animation:float-up linear infinite;}
+@keyframes float-up{0%{opacity:0;transform:translateY(0) scale(0)}10%{opacity:0.6}90%{opacity:0.2}100%{opacity:0;transform:translateY(-140px) scale(0.3)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(44px)}to{opacity:1;transform:translateX(0)}}
+@keyframes iconIn{to{opacity:1;transform:scale(1) rotate(0deg)}}
+@keyframes ringPulse{0%{opacity:0.7;transform:scale(1)}100%{opacity:0;transform:scale(2.2)}}
+@keyframes blink{50%{opacity:0.3}}
+@keyframes cursorBlink{50%{opacity:0}}
+#s1{background:var(--bg);}#s1 .s-bg{background:radial-gradient(ellipse 500px 400px at 28% 50%,rgba(124,106,247,0.22) 0%,transparent 65%),radial-gradient(ellipse 350px 300px at 82% 75%,rgba(74,63,181,0.12) 0%,transparent 55%);}
+#s2{background:var(--bg);}#s2 .s-bg{background:radial-gradient(ellipse 500px 400px at 18% 50%,rgba(124,106,247,0.14) 0%,transparent 65%),radial-gradient(ellipse 400px 300px at 82% 60%,rgba(74,63,181,0.10) 0%,transparent 55%);}
+#s3{background:var(--bg);}#s3 .s-bg{background:radial-gradient(ellipse 600px 500px at 50% 50%,rgba(124,106,247,0.18) 0%,transparent 65%),radial-gradient(ellipse 400px 300px at 10% 80%,rgba(74,63,181,0.12) 0%,transparent 55%);}
+#s3 .s-grid{background-image:linear-gradient(rgba(124,106,247,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(124,106,247,0.05) 1px,transparent 1px);background-size:44px 44px;}
+.s1-left{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:0 54px;}
+.s1-right{position:relative;z-index:2;flex:1;display:flex;align-items:center;justify-content:center;padding:0 36px 0 0;}
+.pro-badge{display:inline-flex;padding:3px 10px;border-radius:5px;background:linear-gradient(135deg,rgba(124,106,247,0.25),rgba(255,209,102,0.15));border:1px solid rgba(255,209,102,0.35);font-size:9px;font-weight:800;font-family:var(--mono);color:var(--gold);letter-spacing:0.1em;margin-bottom:10px;opacity:0;animation:slideUp 0.5s ease 0.9s forwards;}
+.icon-wrap{position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:24px;}
+.icon-reveal{width:80px;height:80px;background:var(--purple);border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px rgba(255,255,255,0.08),0 16px 50px rgba(124,106,247,0.55),0 0 100px rgba(124,106,247,0.25);opacity:0;transform:scale(0.5) rotate(-8deg);animation:iconIn 0.9s cubic-bezier(0.34,1.56,0.64,1) 0.3s forwards;}
+.icon-reveal svg{width:40px;height:40px;}
+.icon-ring{position:absolute;width:80px;height:80px;border-radius:20px;border:1.5px solid rgba(124,106,247,0.45);animation:ringPulse 2s ease-out 1.2s infinite;opacity:0;}
+.icon-ring:nth-child(2){animation-delay:1.6s;}.icon-ring:nth-child(3){animation-delay:2.0s;}
+.brand-row{display:flex;align-items:center;gap:10px;opacity:0;animation:slideUp 0.6s ease 1.1s forwards;}
+.brand-name{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.03em;}
+.brand-dot{width:5px;height:5px;border-radius:50%;background:var(--purple);margin-top:3px;}
+.tool-badge{margin-top:12px;display:inline-flex;padding:5px 16px;border-radius:20px;background:rgba(124,106,247,0.12);border:1px solid rgba(124,106,247,0.3);font-size:11px;font-weight:600;font-family:var(--mono);color:var(--purp2);letter-spacing:0.08em;opacity:0;animation:slideUp 0.5s ease 1.35s forwards;}
+.tagline{margin-top:20px;font-family:var(--serif);font-size:50px;line-height:1.08;letter-spacing:-0.03em;color:var(--text);opacity:0;animation:slideUp 0.6s ease 1.6s forwards;}
+.tagline em{font-style:italic;color:var(--purp2);}
+.sub-tagline{margin-top:14px;font-size:13.5px;color:var(--muted);line-height:1.65;max-width:360px;opacity:0;animation:slideUp 0.5s ease 1.9s forwards;}
+.intro-pill{margin-top:26px;display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:20px;background:var(--bg3);border:1px solid var(--edge);opacity:0;animation:slideUp 0.5s ease 2.1s forwards;}
+.intro-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:blink 1.2s ease infinite;}
+.intro-pill span{font-size:11px;font-weight:600;color:var(--teal);font-family:var(--mono);letter-spacing:0.06em;}
+.s2-left{position:relative;z-index:2;width:250px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;padding:32px 28px;border-right:1px solid var(--edge);align-self:stretch;background:rgba(0,0,0,0.12);}
+.sc-ey{display:flex;align-items:center;gap:8px;margin-bottom:16px;opacity:0;}
+.sc-ey-l{width:24px;height:1.5px;background:var(--purple);}
+.sc-ey-t{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);font-family:var(--mono);}
+.s2-h{font-family:var(--serif);font-size:32px;line-height:1.1;letter-spacing:-0.02em;color:var(--text);opacity:0;}
+.s2-h em{font-style:italic;color:var(--purp2);}
+.s2-d{margin-top:10px;font-size:12px;color:var(--muted);line-height:1.6;opacity:0;}
+.fl{margin-top:16px;display:flex;flex-direction:column;gap:8px;opacity:0;}
+.fi{display:flex;align-items:center;gap:9px;}
+.fd{width:6px;height:6px;border-radius:50%;background:var(--purple);flex-shrink:0;}
+.ft{font-size:11.5px;color:var(--muted);}
+.ft strong{color:var(--text);}
+.lp{margin-top:18px;display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:20px;background:rgba(61,217,196,0.08);border:1px solid rgba(61,217,196,0.2);opacity:0;}
+.lp svg{width:11px;height:11px;color:var(--teal);}
+.lp span{font-size:10px;font-weight:600;color:var(--teal);font-family:var(--mono);}
+.s2-right{position:relative;z-index:2;flex:1;display:flex;align-items:center;justify-content:center;padding:22px 26px;}
+.app-shell{width:100%;max-width:600px;background:var(--bg2);border:1px solid var(--edge);border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,0.04),0 20px 60px rgba(0,0,0,0.7);}
+.app-bar{height:32px;background:var(--bg3);border-bottom:1px solid var(--edge);display:flex;align-items:center;padding:0 11px;gap:8px;}
+.atls{display:flex;gap:4px;}.atl{width:8px;height:8px;border-radius:50%;}
+.app-url{flex:1;height:18px;background:rgba(255,255,255,0.04);border:1px solid var(--edge);border-radius:3px;display:flex;align-items:center;padding:0 7px;gap:5px;font-size:8px;font-family:var(--mono);color:var(--dim);}
+.app-url svg{width:7px;height:7px;color:var(--teal);}
+.app-body{padding:14px;display:flex;flex-direction:column;gap:9px;}
+.app-status{height:22px;background:var(--bg2);border-top:1px solid var(--edge);display:flex;align-items:center;padding:0 10px;justify-content:space-between;}
+.as-ok{font-size:7.5px;font-family:var(--mono);color:var(--teal);font-weight:600;}
+.as-r{font-size:7px;font-family:var(--mono);color:var(--dim);}
+.s3-left{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;padding:44px 50px;}
+.outro-icon{width:64px;height:64px;background:var(--purple);border-radius:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px rgba(255,255,255,0.08),0 14px 40px rgba(124,106,247,0.50),0 0 80px rgba(124,106,247,0.22);opacity:0;transform:scale(0.7);margin-bottom:18px;}
+.outro-icon svg{width:30px;height:30px;}
+.pro-outro{display:inline-flex;padding:3px 12px;border-radius:6px;background:linear-gradient(135deg,rgba(124,106,247,0.2),rgba(255,209,102,0.12));border:1px solid rgba(255,209,102,0.4);font-size:10px;font-weight:800;font-family:var(--mono);color:var(--gold);letter-spacing:0.1em;margin-bottom:14px;opacity:0;}
+.outro-h1{font-family:var(--serif);font-size:52px;line-height:1.0;letter-spacing:-0.03em;color:var(--text);opacity:0;}
+.outro-h1 em{font-style:italic;color:var(--purp2);}
+.outro-sub{margin-top:14px;font-size:14px;color:var(--muted);line-height:1.65;max-width:380px;opacity:0;}
+.outro-priv{margin-top:20px;display:inline-flex;align-items:center;gap:8px;opacity:0;}
+.outro-priv svg{width:14px;height:14px;color:var(--teal);}
+.outro-priv span{font-size:12px;font-weight:600;color:var(--teal);}
+.fin-tag{margin-top:24px;font-family:var(--serif);font-size:26px;line-height:1.2;letter-spacing:-0.02em;color:var(--text);opacity:0;}
+.fin-tag em{font-style:italic;color:var(--purp2);}
+.s3-right{position:relative;z-index:2;width:380px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;padding:36px 36px 36px 0;}
+.pricing-card{width:100%;background:var(--bg3);border:1px solid var(--edge);border-radius:18px;overflow:hidden;opacity:0;transform:translateY(20px);}
+.pc-head{padding:14px 22px 12px;background:linear-gradient(135deg,rgba(124,106,247,0.12),rgba(255,209,102,0.06));border-bottom:1px solid var(--edge);display:flex;align-items:center;justify-content:space-between;}
+.pc-t{font-size:13px;font-weight:800;color:var(--text);}
+.pc-b{font-size:9px;font-weight:800;font-family:var(--mono);color:var(--gold);background:rgba(255,209,102,0.12);border:1px solid rgba(255,209,102,0.3);padding:2px 9px;border-radius:4px;letter-spacing:0.08em;}
+.pricing-top{padding:16px 22px;border-bottom:1px solid var(--edge);}
+.pricing-lbl{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;}
+.pricing-rows{display:flex;flex-direction:column;gap:8px;}
+.pr-row{display:flex;align-items:flex-start;gap:10px;}
+.pck{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.pck.pro{background:rgba(124,106,247,0.15);border:1px solid rgba(124,106,247,0.3);}
+.pck.pro svg{width:8px;height:8px;color:var(--purp2);}
+.pck.free{background:rgba(61,217,196,0.15);border:1px solid rgba(61,217,196,0.3);}
+.pck.free svg{width:8px;height:8px;color:var(--teal);}
+.ptxt{font-size:12px;color:var(--muted);}
+.ptxt strong{color:var(--text);font-weight:600;}
+.pricing-bottom{padding:14px 22px;display:flex;align-items:center;justify-content:space-between;background:rgba(124,106,247,0.06);}
+.price-tag{display:flex;align-items:baseline;gap:5px;}
+.price-main{font-size:30px;font-weight:800;color:var(--text);font-family:var(--mono);letter-spacing:-0.03em;}
+.price-lbl{font-size:12px;color:var(--muted);}
+.price-cta{padding:10px 22px;background:var(--purple);color:#fff;border-radius:9px;font-size:13px;font-weight:700;font-family:var(--sans);border:none;cursor:pointer;box-shadow:0 8px 24px rgba(124,106,247,0.4);}
+.social-proof{margin-top:14px;display:flex;align-items:center;gap:8px;opacity:0;}
+.stars{display:flex;gap:2px;}.star{font-size:14px;}
+.sp-text{font-size:12px;color:var(--muted);}
+.progress-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.06);z-index:100;}
+.progress-fill{height:100%;background:var(--purple);border-radius:0 2px 2px 0;width:0%;transition:none;}
+.transition-overlay{position:absolute;inset:0;background:var(--bg);opacity:0;z-index:50;pointer-events:none;}
+
+.tc-layout{display:flex;flex:1;overflow:hidden;}
+.tc-panel{flex:1;display:flex;flex-direction:column;}
+.panel-header{height:28px;background:var(--bg3);border-bottom:1px solid var(--edge);display:flex;align-items:center;padding:0 10px;gap:6px;}
+.ph-lbl{font-size:8px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-family:var(--mono);}
+.ph-count{margin-left:auto;font-size:7.5px;font-family:var(--mono);color:var(--dim);}
+.tc-textarea{flex:1;padding:10px 12px;font-size:10px;color:var(--muted);line-height:1.7;overflow:hidden;background:var(--bg);}
+.tc-textarea.dirty{color:var(--rose);opacity:0.85;}
+.tc-textarea.clean{color:var(--teal);}
+.tc-divider{width:1px;background:var(--edge);position:relative;display:flex;align-items:center;justify-content:center;}
+.tc-div-btn{width:28px;height:28px;border-radius:50%;background:var(--purple);border:2px solid var(--bg2);display:flex;align-items:center;justify-content:center;z-index:2;}
+.tc-div-btn svg{width:12px;height:12px;color:#fff;}
+.transforms-bar{background:var(--bg3);border-top:1px solid var(--edge);padding:8px 10px;display:flex;flex-wrap:wrap;gap:5px;}
+.transform-chip{padding:4px 9px;border-radius:5px;font-size:8px;font-weight:600;font-family:var(--mono);background:var(--bg2);border:1px solid var(--edge);color:var(--dim);cursor:pointer;transition:all 0.2s;}
+.transform-chip.active{background:rgba(124,106,247,0.15);border-color:rgba(124,106,247,0.4);color:var(--purp2);}
+.transform-chip.done{background:rgba(61,217,196,0.1);border-color:rgba(61,217,196,0.3);color:var(--teal);}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+  <div class="transition-overlay" id="overlay"></div>
+  <div class="scene" id="s1">
+    <div class="s-bg"></div><div class="s-grid"></div>
+    <div class="particle" style="width:3px;height:3px;bottom:18%;left:12%;animation-duration:5s;animation-delay:1s;"></div>
+    <div class="particle" style="width:2px;height:2px;bottom:35%;left:65%;animation-duration:6s;animation-delay:2.5s;"></div>
+    <div class="s1-left">
+      <div class="pro-badge">★ PRO TOOL</div>
+      <div class="icon-wrap"><div class="icon-ring"></div><div class="icon-ring" style="animation-delay:1.6s;"></div><div class="icon-ring" style="animation-delay:2.0s;"></div>
+        <div class="icon-reveal"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg></div>
+      </div>
+      <div class="brand-row"><div class="brand-name">LocalKit</div><div class="brand-dot"></div></div>
+      <div class="tool-badge">Text Cleaner</div>
+      <div class="tagline">Dirty text in.<br><em>Clean text out.</em></div>
+      <div class="sub-tagline">Strip formatting, fix spacing, remove duplicates, convert case — one-click transforms on any pasted text. Fully local, fully instant.</div>
+      <div class="intro-pill"><div class="intro-pill-dot"></div><span>Zero uploads, ever</span></div>
+    </div>
+    <div class="s1-right">
+      <div style="width:420px;display:flex;flex-direction:column;gap:10px;opacity:0;animation:slideLeft 0.7s cubic-bezier(0.16,1,0.3,1) 1.4s forwards;">
+        <div style="background:var(--bg2);border:1px solid var(--edge);border-radius:12px;overflow:hidden;">
+          <div style="display:flex;height:160px;">
+            <div style="flex:1;padding:10px;background:var(--bg);border-right:1px solid var(--edge);">
+              <div style="font-size:7px;font-weight:600;color:var(--rose);font-family:var(--mono);margin-bottom:5px;letter-spacing:0.1em;">MESSY INPUT</div>
+              <div style="font-size:9px;color:rgba(247,93,138,0.7);line-height:1.6;font-family:var(--mono);">Hello,   World!!<br>&nbsp;&nbsp;&nbsp;This   has EXTRA    spaces<br>and     weird    formatting...<br>SHOUTING CAPS   everywhere<br>duplicate. duplicate. lines<br>duplicate. duplicate. lines</div>
+            </div>
+            <div style="flex:1;padding:10px;">
+              <div style="font-size:7px;font-weight:600;color:var(--teal);font-family:var(--mono);margin-bottom:5px;letter-spacing:0.1em;">CLEAN OUTPUT</div>
+              <div style="font-size:9px;color:var(--teal);line-height:1.6;font-family:var(--mono);">Hello, World!<br>This has extra spaces<br>and weird formatting...<br>Shouting caps everywhere<br>Duplicate lines removed</div>
+            </div>
+          </div>
+          <div style="padding:8px 10px;background:var(--bg3);border-top:1px solid var(--edge);display:flex;flex-wrap:wrap;gap:4px;">
+            <div style="padding:3px 8px;border-radius:4px;font-size:7.5px;font-weight:600;font-family:var(--mono);background:rgba(61,217,196,0.1);border:1px solid rgba(61,217,196,0.3);color:var(--teal);">✓ Extra spaces</div>
+            <div style="padding:3px 8px;border-radius:4px;font-size:7.5px;font-weight:600;font-family:var(--mono);background:rgba(61,217,196,0.1);border:1px solid rgba(61,217,196,0.3);color:var(--teal);">✓ Fix case</div>
+            <div style="padding:3px 8px;border-radius:4px;font-size:7.5px;font-weight:600;font-family:var(--mono);background:rgba(61,217,196,0.1);border:1px solid rgba(61,217,196,0.3);color:var(--teal);">✓ Duplicates</div>
+            <div style="padding:3px 8px;border-radius:4px;font-size:7.5px;font-weight:600;font-family:var(--mono);background:rgba(61,217,196,0.1);border:1px solid rgba(61,217,196,0.3);color:var(--teal);">✓ Smart punctuation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scene" id="s2">
+    <div class="s-bg"></div>
+    <div class="s2-left">
+      <div class="sc-ey" id="sc-ey"><div class="sc-ey-l"></div><div class="sc-ey-t">How it works</div></div>
+      <div class="s2-h" id="s2-h">Paste messy.<br><em>Get clean.</em></div>
+      <div class="s2-d" id="s2-d">Paste text from anywhere — PDFs, emails, websites — and apply one-click transforms. Strips HTML, fixes spacing, normalizes case, removes duplicates, and more.</div>
+      <div class="fl" id="fl">
+        <div class="fi"><div class="fd"></div><div class="ft"><strong>Strip HTML & formatting</strong></div></div>
+        <div class="fi"><div class="fd"></div><div class="ft"><strong>Fix extra whitespace</strong> — normalize gaps</div></div>
+        <div class="fi"><div class="fd"></div><div class="ft"><strong>Case conversion</strong> — lower, upper, title, sentence</div></div>
+        <div class="fi"><div class="fd"></div><div class="ft"><strong>Remove duplicate lines</strong> — one click</div></div>
+      </div>
+      <div class="lp" id="lp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Browser-only · zero network requests</span></div>
+    </div>
+    <div class="s2-right">
+      <div class="app-shell" id="app-shell" style="display:flex;flex-direction:column;height:380px;">
+        <div class="app-bar"><div class="atls"><div class="atl" style="background:#ff5f57"></div><div class="atl" style="background:#febc2e"></div><div class="atl" style="background:#28c840"></div></div><div class="app-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>localkit://text-cleaner</div></div>
+        <div class="tc-layout">
+          <div class="tc-panel">
+            <div class="panel-header"><span class="ph-lbl">Input</span><span class="ph-count" id="in-count">47 words</span></div>
+            <div class="tc-textarea dirty" id="tc-input">Hello,   World!!
+   This   has EXTRA    spaces
+and     weird    formatting...
+SHOUTING CAPS   everywhere
+duplicate lines below
+duplicate lines below</div>
+          </div>
+          <div class="tc-divider">
+            <div class="tc-div-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+          </div>
+          <div class="tc-panel">
+            <div class="panel-header"><span class="ph-lbl">Output</span><span class="ph-count" id="out-count">—</span></div>
+            <div class="tc-textarea clean" id="tc-output" style="opacity:0;"></div>
+          </div>
+        </div>
+        <div class="transforms-bar" id="transforms-bar">
+          <div class="transform-chip" id="tc1">Strip extra spaces</div>
+          <div class="transform-chip" id="tc2">Fix case</div>
+          <div class="transform-chip" id="tc3">Remove duplicates</div>
+          <div class="transform-chip" id="tc4">Trim lines</div>
+          <div class="transform-chip" id="tc5">Smart quotes</div>
+          <div class="transform-chip" id="tc6">Strip HTML</div>
+          <div class="transform-chip" id="tc7">UPPERCASE</div>
+          <div class="transform-chip" id="tc8">lowercase</div>
+          <div class="transform-chip" id="tc9">Title Case</div>
+        </div>
+        <div class="app-status"><span class="as-ok" id="s2-status">Ready · paste any text</span><span class="as-r">browser-only · offline</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="scene" id="s3">
+    <div class="s-bg"></div><div class="s-grid"></div>
+    <div class="s3-left">
+      <div class="outro-icon" id="outro-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg></div>
+      <div class="pro-outro" id="pro-outro">★ PRO TOOL</div>
+      <div class="outro-h1" id="outro-h1">Pro tool.<br><em>One-time $9.</em></div>
+      <div class="outro-sub" id="outro-sub">Text Cleaner is a Pro LocalKit tool. Paste messy text and clean it with one-click transforms — all processed locally in your browser.</div>
+      <div class="outro-priv" id="outro-priv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Your text never leaves your browser</span></div>
+      <div class="fin-tag" id="fin-tag">Your text.<br><em>Your machine.</em></div>
+    </div>
+    <div class="s3-right">
+      <div class="pricing-card" id="pricing-card">
+        <div class="pc-head"><span class="pc-t">LocalKit Pro</span><span class="pc-b">ONE-TIME $9</span></div>
+        <div class="pricing-top"><div class="pricing-lbl">What you get</div><div class="pricing-rows">
+          <div class="pr-row"><div class="pck pro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="ptxt"><strong>Text Cleaner</strong> — strip HTML, fix spacing, case convert, remove duplicates &amp; more.</div></div>
+          <div class="pr-row"><div class="pck free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="ptxt"><strong>6 free tools</strong> — Screenshot, Compress, PDF Merge, Passwords &amp; more.</div></div>
+          <div class="pr-row"><div class="pck pro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="ptxt"><strong>One-time payment.</strong> No subscription. Ever.</div></div>
+        </div></div>
+        <div class="pricing-bottom"><div class="price-tag"><div class="price-main">$9</div><div class="price-lbl">one-time</div></div><button class="price-cta">Get Pro →</button></div>
+      </div>
+      <div class="social-proof" id="social-proof"><div class="stars"><div class="star">⭐</div><div class="star">⭐</div><div class="star">⭐</div><div class="star">⭐</div><div class="star">⭐</div></div><div class="sp-text">100% local · works offline · no account</div></div>
+    </div>
+  </div>
+</div>
+<script>
+
+(function(){const s=document.querySelector('.stage');function r(){const sc=Math.min(window.innerWidth/960,window.innerHeight/540)*0.92;s.style.transform=`scale(${sc})`;}r();window.addEventListener('resize',r);})();
+const overlay=document.getElementById('overlay'),progress=document.getElementById('progress');
+const DURATIONS=[4500,6500,5500],TOTAL=DURATIONS.reduce((a,b)=>a+b,0);
+let cur=0,start=0,started=false;
+function upd(e){progress.style.width=Math.min(100,(e/TOTAL)*100)+'%';}
+function flash(cb){overlay.style.transition='opacity 0.18s ease';overlay.style.opacity='1';setTimeout(()=>{cb();overlay.style.transition='opacity 0.25s ease';overlay.style.opacity='0';},180);}
+function show(idx){document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));document.getElementById('s'+(idx+1)).classList.add('active');[aS1,aS2,aS3][idx]();}
+function loop(ts){if(!started){started=true;start=ts;}const e=ts-start;let acc=0;for(let i=0;i<DURATIONS.length;i++){acc+=DURATIONS[i];if(e<acc){if(i!==cur)flash(()=>{cur=i;show(i);});break;}}if(e>=TOTAL){start=ts;flash(()=>{cur=0;show(0);});}upd(e%TOTAL);requestAnimationFrame(loop);}
+function aS1(){}
+function animLeft(){['sc-ey','s2-h','s2-d','fl','lp'].forEach((id,i)=>{const el=document.getElementById(id);if(!el)return;el.style.opacity='0';el.style.transform='translateY(10px)';setTimeout(()=>an(el,'su'),100+i*150);});const sh=document.getElementById('app-shell');sh.style.opacity='0';sh.style.transform='translateY(14px)';setTimeout(()=>an(sh,'ai'),300);}
+function aS3(){const els={oi:{id:'outro-icon',sc:true},po:{id:'pro-outro'},oh:{id:'outro-h1'},os:{id:'outro-sub'},op:{id:'outro-priv'},ft:{id:'fin-tag'},pc:{id:'pricing-card',sl:true},sp:{id:'social-proof'}};const delays=[100,300,480,730,980,1230,260,1650];Object.entries(els).forEach(([k,c],i)=>{const el=document.getElementById(c.id);if(!el)return;el.style.transition='none';el.style.opacity='0';if(c.sc)el.style.transform='scale(0.7)';if(c.sl)el.style.transform='translateY(20px)';setTimeout(()=>{el.style.transition='opacity 0.55s ease,transform 0.55s cubic-bezier(0.16,1,0.3,1)';el.style.opacity='1';if(c.sc)el.style.transform='scale(1)';if(c.sl)el.style.transform='translateY(0)';},delays[i]);});}
+function an(el,t){if(!el)return;if(t==='su'){el.style.transition='opacity 0.5s ease,transform 0.5s cubic-bezier(0.16,1,0.3,1)';el.style.transform='translateY(0)';el.style.opacity='1';}else if(t==='ai'){el.style.transition='opacity 0.55s ease,transform 0.55s cubic-bezier(0.16,1,0.3,1)';el.style.transform='translateY(0)';el.style.opacity='1';}}
+show(0);requestAnimationFrame(loop);
+
+function aS2(){
+  animLeft();
+  const sh=document.getElementById('app-shell');sh.style.opacity='0';sh.style.transform='translateY(14px)';setTimeout(()=>an(sh,'ai'),300);
+  const chips=['tc1','tc2','tc3','tc4'];const out=document.getElementById('tc-output');out.style.opacity='0';
+  const cleanText="Hello, World!\nThis has extra spaces\nand weird formatting...\nShouting caps everywhere\nDuplicate lines removed";
+  chips.forEach((id,i)=>{setTimeout(()=>{const el=document.getElementById(id);el.classList.add('active');setTimeout(()=>el.classList.add('done'),500);},1200+i*600);});
+  setTimeout(()=>{out.style.transition='opacity 0.4s ease';out.style.opacity='1';out.textContent=cleanText;document.getElementById('out-count').textContent='32 words';document.getElementById('s2-status').textContent='Cleaned ✓ · 4 transforms applied · nothing uploaded';},3800);
+}
+</script>
+</body>
+</html>

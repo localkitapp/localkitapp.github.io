@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>LocalKit Screenshot — Desktop Reel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Figtree:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07060d;--bg2:#0e0c1a;--bg3:#161226;--bg4:#1e1a32;
+  --edge:#2d2850;--edgeb:#3d3870;--text:#e8e6f8;--muted:#8884b8;--dim:#514d7a;
+  --purple:#7c6af7;--purp2:#9b8cff;--purp3:#4a3fb5;
+  --teal:#3dd9c4;--rose:#f75d8a;--gold:#ffd166;
+  --serif:'DM Serif Display',serif;--sans:'Figtree',sans-serif;--mono:'DM Mono',monospace;
+}
+html,body{width:100%;min-height:100vh;background:#04030a;display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:var(--sans);}
+
+/* 16:9 stage — rendered at 960×540, scales to fill screen */
+.stage{
+  position:relative;
+  width:960px;height:540px;
+  flex-shrink:0;overflow:hidden;border-radius:20px;
+  box-shadow:0 0 0 1px rgba(124,106,247,0.15),0 40px 100px rgba(0,0,0,0.9),0 0 80px rgba(124,106,247,0.10);
+  transform-origin:center;
+}
+
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;}
+.scene.active{opacity:1;pointer-events:all;}
+
+/* ── SHARED BG ELEMENTS ── */
+.s-bg-grad{position:absolute;inset:0;}
+.s-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(124,106,247,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,106,247,0.04) 1px,transparent 1px);background-size:36px 36px;}
+.particle{position:absolute;border-radius:50%;background:var(--purple);opacity:0;animation:float-up linear infinite;}
+@keyframes float-up{0%{opacity:0;transform:translateY(0) scale(0)}10%{opacity:0.6}90%{opacity:0.2}100%{opacity:0;transform:translateY(-140px) scale(0.3)}}
+
+/* ── SCENE 1 — INTRO (two-column) ── */
+#s1{background:var(--bg);flex-direction:row;gap:0;}
+#s1 .s-bg-grad{background:radial-gradient(ellipse 500px 400px at 30% 50%,rgba(124,106,247,0.20) 0%,transparent 65%),radial-gradient(ellipse 400px 300px at 80% 80%,rgba(74,63,181,0.12) 0%,transparent 55%),radial-gradient(ellipse 300px 300px at 85% 15%,rgba(61,217,196,0.06) 0%,transparent 55%);}
+
+.s1-left{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:0 60px;}
+.s1-right{position:relative;z-index:2;flex:1;display:flex;align-items:center;justify-content:center;padding:0 40px 0 0;}
+
+.icon-wrap{position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:28px;}
+.icon-reveal{width:80px;height:80px;background:var(--purple);border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px rgba(255,255,255,0.08),0 16px 50px rgba(124,106,247,0.55),0 0 100px rgba(124,106,247,0.25);opacity:0;transform:scale(0.5) rotate(-8deg);animation:iconIn 0.9s cubic-bezier(0.34,1.56,0.64,1) 0.3s forwards;}
+@keyframes iconIn{to{opacity:1;transform:scale(1) rotate(0deg)}}
+.icon-reveal svg{width:40px;height:40px;}
+.icon-ring{position:absolute;width:80px;height:80px;border-radius:20px;border:1.5px solid rgba(124,106,247,0.45);animation:ringPulse 2s ease-out 1.2s infinite;opacity:0;}
+.icon-ring:nth-child(2){animation-delay:1.6s;}.icon-ring:nth-child(3){animation-delay:2.0s;}
+@keyframes ringPulse{0%{opacity:0.7;transform:scale(1)}100%{opacity:0;transform:scale(2.2)}}
+
+.brand-row{display:flex;align-items:center;gap:10px;opacity:0;animation:slideUp 0.6s ease 1.1s forwards;}
+@keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.brand-name{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.03em;}
+.brand-dot{width:5px;height:5px;border-radius:50%;background:var(--purple);margin-top:3px;}
+
+.tool-badge{margin-top:12px;display:inline-flex;padding:5px 16px;border-radius:20px;background:rgba(124,106,247,0.12);border:1px solid rgba(124,106,247,0.3);font-size:11px;font-weight:600;font-family:var(--mono);color:var(--purp2);letter-spacing:0.08em;opacity:0;animation:slideUp 0.5s ease 1.35s forwards;}
+
+.tagline{margin-top:20px;font-family:var(--serif);font-size:52px;line-height:1.08;letter-spacing:-0.03em;color:var(--text);opacity:0;animation:slideUp 0.6s ease 1.6s forwards;}
+.tagline em{font-style:italic;color:var(--purp2);}
+
+.sub-tagline{margin-top:16px;font-size:14px;color:var(--muted);line-height:1.65;max-width:360px;opacity:0;animation:slideUp 0.5s ease 1.9s forwards;}
+
+.intro-pill{margin-top:28px;display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:20px;background:var(--bg3);border:1px solid var(--edge);opacity:0;animation:slideUp 0.5s ease 2.15s forwards;}
+.intro-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:blink 1.2s ease infinite;}
+@keyframes blink{50%{opacity:0.3}}
+.intro-pill span{font-size:11px;font-weight:600;color:var(--teal);font-family:var(--mono);letter-spacing:0.06em;}
+
+/* Right side — decorative browser mockup */
+.browser-deco{
+  width:420px;height:280px;
+  background:var(--bg2);border:1px solid var(--edge);border-radius:12px;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(255,255,255,0.04),0 20px 60px rgba(0,0,0,0.7),0 0 40px rgba(124,106,247,0.08);
+  opacity:0;animation:slideLeft 0.7s cubic-bezier(0.16,1,0.3,1) 1.4s forwards;
+}
+@keyframes slideLeft{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+.browser-chrome{height:30px;background:var(--bg3);border-bottom:1px solid var(--edge);display:flex;align-items:center;padding:0 12px;gap:8px;}
+.b-dots{display:flex;gap:4px;}.b-dot{width:8px;height:8px;border-radius:50%;}
+.b-url{flex:1;height:17px;background:rgba(255,255,255,0.04);border:1px solid var(--edge);border-radius:3px;margin-left:6px;display:flex;align-items:center;padding:0 8px;font-size:8px;font-family:var(--mono);color:var(--dim);}
+.b-body{padding:14px 16px;display:flex;flex-direction:column;gap:8px;background:var(--bg);}
+.b-nav{display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid var(--edge);}
+.b-logo{font-size:12px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:6px;}
+.b-logo-sq{width:14px;height:14px;background:var(--purple);border-radius:3px;}
+.b-links{display:flex;gap:10px;}
+.b-link{font-size:9px;color:var(--dim);}
+.b-cta-sm{font-size:9px;font-weight:700;background:var(--purple);color:#fff;padding:3px 10px;border-radius:3px;}
+.b-hero{background:linear-gradient(135deg,rgba(124,106,247,0.15),rgba(61,217,196,0.05));border:1px solid rgba(124,106,247,0.18);border-radius:8px;padding:16px;text-align:center;}
+.b-hero-tag{font-size:8px;color:var(--teal);font-family:var(--mono);letter-spacing:0.08em;margin-bottom:6px;}
+.b-hero-title{font-size:16px;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:6px;}
+.b-hero-title span{color:var(--purp2);}
+.b-hero-sub{font-size:9px;color:var(--muted);margin-bottom:10px;}
+.b-hero-btn{display:inline-flex;align-items:center;background:var(--purple);color:#fff;font-size:9px;font-weight:700;padding:5px 14px;border-radius:4px;gap:4px;}
+.b-stats{display:flex;gap:6px;}
+.b-stat{flex:1;background:var(--bg3);border:1px solid var(--edge);border-radius:4px;padding:5px;text-align:center;font-size:8px;color:var(--dim);}
+
+/* Camera icon overlay on browser */
+.capture-overlay{
+  position:absolute;top:10px;right:10px;
+  width:36px;height:36px;border-radius:9px;background:var(--purple);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 16px rgba(124,106,247,0.6);
+  opacity:0;animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 2.2s forwards;
+}
+@keyframes popIn{from{opacity:0;transform:scale(0.5)}to{opacity:1;transform:scale(1)}}
+.capture-overlay svg{width:18px;height:18px;}
+
+/* ── SCENE 2 — FUNCTIONALITY ── */
+#s2{background:var(--bg);flex-direction:row;align-items:stretch;gap:0;}
+#s2 .s-bg-grad{background:radial-gradient(ellipse 500px 400px at 20% 50%,rgba(124,106,247,0.14) 0%,transparent 65%),radial-gradient(ellipse 400px 300px at 80% 60%,rgba(74,63,181,0.10) 0%,transparent 55%);}
+
+/* Left info panel */
+.s2-left{position:relative;z-index:2;width:280px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;padding:40px 36px;border-right:1px solid var(--edge);gap:0;background:rgba(0,0,0,0.15);}
+
+.scene-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:18px;opacity:0;}
+.eyebrow-line{width:24px;height:1.5px;background:var(--purple);}
+.eyebrow-text{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);font-family:var(--mono);}
+
+.s2-heading{font-family:var(--serif);font-size:34px;line-height:1.1;letter-spacing:-0.02em;color:var(--text);opacity:0;}
+.s2-heading em{font-style:italic;color:var(--purp2);}
+.s2-desc{margin-top:12px;font-size:13px;color:var(--muted);line-height:1.6;opacity:0;}
+
+.feat-list{margin-top:20px;display:flex;flex-direction:column;gap:8px;opacity:0;}
+.feat-item{display:flex;align-items:center;gap:9px;}
+.feat-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);flex-shrink:0;}
+.feat-text{font-size:12px;color:var(--muted);}
+.feat-text strong{color:var(--text);}
+
+.local-pill{margin-top:22px;display:inline-flex;align-items:center;gap:7px;padding:7px 16px;border-radius:20px;background:rgba(61,217,196,0.08);border:1px solid rgba(61,217,196,0.2);opacity:0;}
+.local-pill svg{width:11px;height:11px;color:var(--teal);}
+.local-pill span{font-size:10px;font-weight:600;color:var(--teal);font-family:var(--mono);}
+
+/* Right — main app mockup */
+.s2-right{position:relative;z-index:2;flex:1;display:flex;align-items:center;justify-content:center;padding:28px 32px;}
+
+.app-shell{width:100%;max-width:580px;background:var(--bg2);border:1px solid var(--edge);border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,0.04),0 20px 60px rgba(0,0,0,0.7);}
+.app-bar{height:34px;background:var(--bg3);border-bottom:1px solid var(--edge);display:flex;align-items:center;padding:0 12px;gap:8px;}
+.atls{display:flex;gap:4px;}.atl{width:8px;height:8px;border-radius:50%;}
+.app-url{flex:1;height:19px;background:rgba(255,255,255,0.04);border:1px solid var(--edge);border-radius:4px;display:flex;align-items:center;padding:0 8px;gap:5px;font-size:8.5px;font-family:var(--mono);color:var(--dim);}
+.app-url svg{width:7px;height:7px;color:var(--teal);}
+
+/* Two-panel app body */
+.app-body{display:flex;height:340px;}
+.panel-left{width:200px;flex-shrink:0;border-right:1px solid var(--edge);padding:14px;display:flex;flex-direction:column;gap:10px;overflow:hidden;}
+.panel-sec-title{font-size:7.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--dim);padding-bottom:7px;border-bottom:1px solid var(--edge);}
+
+.target-box{background:var(--bg);border:1px solid var(--edgeb);border-radius:6px;padding:8px;display:flex;flex-direction:column;gap:4px;}
+.target-row{display:flex;align-items:center;gap:6px;padding:3px 4px;border-radius:4px;}
+.target-row.on{background:rgba(124,106,247,0.14);}
+.t-icon{width:11px;height:11px;border-radius:2px;background:var(--bg3);border:1px solid var(--edge);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.t-icon.on{background:var(--purple);border-color:var(--purple);}
+.t-icon svg{width:6px;height:6px;}
+.t-label{font-size:7.5px;color:var(--dim);font-family:var(--mono);}
+.t-label.on{color:var(--purp2);font-weight:600;}
+
+.fmt-row{display:flex;gap:3px;}
+.fmt-btn{flex:1;text-align:center;font-size:8px;font-weight:700;padding:4px 0;border-radius:4px;border:1px solid var(--edge);color:var(--dim);background:var(--bg);font-family:var(--mono);}
+.fmt-btn.on{background:var(--purple);border-color:var(--purple);color:#fff;}
+
+.cap-btn{width:100%;padding:8px 0;border:none;border-radius:6px;background:var(--purple);color:#fff;font-size:9px;font-weight:700;font-family:var(--sans);display:flex;align-items:center;justify-content:center;gap:5px;box-shadow:0 0 14px rgba(124,106,247,0.35);}
+.cap-btn svg{width:9px;height:9px;}
+
+.action-group{display:flex;flex-direction:column;gap:4px;}
+.act-btn{width:100%;padding:5px 8px;border:1px solid var(--edge);border-radius:4px;background:var(--bg3);color:var(--muted);font-size:7.5px;font-weight:600;font-family:var(--sans);display:flex;align-items:center;gap:5px;}
+.act-btn svg{width:7px;height:7px;flex-shrink:0;}
+.act-btn.hi{border-color:rgba(124,106,247,0.35);color:var(--purp2);background:rgba(124,106,247,0.08);}
+
+/* Preview panel */
+.panel-right{flex:1;background:var(--bg);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.preview-frame{width:280px;border-radius:7px;overflow:hidden;border:1px solid var(--edge);box-shadow:0 8px 30px rgba(0,0,0,0.6),0 0 0 1px rgba(124,106,247,0.12);}
+.prev-chrome{height:18px;background:var(--bg4);border-bottom:1px solid var(--edge);display:flex;align-items:center;padding:0 7px;gap:4px;}
+.prev-dots{display:flex;gap:2.5px;}.prev-dot{width:5px;height:5px;border-radius:50%;}
+.prev-url-bar{flex:1;height:10px;background:rgba(255,255,255,0.05);border-radius:2px;font-size:6px;font-family:var(--mono);color:var(--dim);display:flex;align-items:center;padding:0 5px;margin-left:4px;}
+.prev-body{background:#0c0b18;padding:12px 10px;display:flex;flex-direction:column;gap:7px;}
+.prev-nav{display:flex;justify-content:space-between;align-items:center;padding-bottom:7px;border-bottom:1px solid var(--edge);}
+.prev-logo{font-size:8px;font-weight:800;color:var(--text);}
+.prev-links{display:flex;gap:8px;align-items:center;}
+.prev-link{font-size:6.5px;color:var(--dim);}
+.prev-hero{background:linear-gradient(135deg,rgba(124,106,247,0.18),rgba(61,217,196,0.08));border:1px solid rgba(124,106,247,0.2);border-radius:6px;padding:10px;text-align:center;}
+.prev-tag{font-size:6px;color:var(--teal);font-family:var(--mono);margin-bottom:5px;letter-spacing:0.06em;}
+.prev-title{font-size:9px;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:4px;}
+.prev-title span{color:var(--purp2);}
+.prev-sub{font-size:6.5px;color:var(--muted);margin-bottom:7px;}
+.prev-btn{display:inline-flex;background:var(--purple);color:#fff;font-size:7px;font-weight:700;padding:4px 10px;border-radius:3px;}
+.prev-feats{display:flex;gap:5px;}
+.prev-feat{flex:1;background:var(--bg3);border:1px solid var(--edge);border-radius:3px;padding:5px;font-size:6px;color:var(--dim);text-align:center;}
+.dim-tag{position:absolute;bottom:8px;right:8px;padding:3px 7px;border-radius:4px;background:rgba(0,0,0,0.7);border:1px solid var(--edge);font-size:7px;font-family:var(--mono);color:var(--teal);font-weight:600;}
+.idle-state{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.idle-icon{width:48px;height:48px;border-radius:12px;border:1.5px dashed var(--edge);display:flex;align-items:center;justify-content:center;}
+.idle-text{font-size:9px;color:var(--dim);font-family:var(--mono);text-align:center;line-height:1.5;}
+
+.app-status{height:22px;background:var(--bg2);border-top:1px solid var(--edge);display:flex;align-items:center;padding:0 10px;justify-content:space-between;}
+.as-ok{font-size:7.5px;font-family:var(--mono);color:var(--teal);font-weight:600;}
+.as-r{font-size:7px;font-family:var(--mono);color:var(--dim);}
+
+/* ── SCENE 3 — OUTRO ── */
+#s3{background:var(--bg);flex-direction:row;gap:0;}
+#s3 .s-bg-grad{background:radial-gradient(ellipse 600px 500px at 50% 50%,rgba(124,106,247,0.18) 0%,transparent 65%),radial-gradient(ellipse 400px 300px at 10% 80%,rgba(74,63,181,0.12) 0%,transparent 55%),radial-gradient(ellipse 300px 400px at 90% 10%,rgba(61,217,196,0.07) 0%,transparent 55%);}
+#s3 .s-grid{background-image:linear-gradient(rgba(124,106,247,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(124,106,247,0.05) 1px,transparent 1px);background-size:44px 44px;}
+
+.s3-left{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;padding:50px 56px;gap:0;}
+.outro-icon{width:64px;height:64px;background:var(--purple);border-radius:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px rgba(255,255,255,0.08),0 14px 40px rgba(124,106,247,0.50),0 0 80px rgba(124,106,247,0.22);opacity:0;transform:scale(0.7);margin-bottom:24px;}
+.outro-icon svg{width:30px;height:30px;}
+.outro-h1{font-family:var(--serif);font-size:54px;line-height:1.0;letter-spacing:-0.03em;color:var(--text);opacity:0;}
+.outro-h1 em{font-style:italic;color:var(--purp2);}
+.outro-sub{margin-top:14px;font-size:15px;color:var(--muted);line-height:1.65;max-width:400px;opacity:0;}
+.outro-privacy{margin-top:24px;display:inline-flex;align-items:center;gap:8px;opacity:0;}
+.outro-privacy svg{width:14px;height:14px;color:var(--teal);}
+.outro-privacy span{font-size:12px;font-weight:600;color:var(--teal);}
+.final-tagline{margin-top:32px;font-family:var(--serif);font-size:28px;line-height:1.2;letter-spacing:-0.02em;color:var(--text);opacity:0;}
+.final-tagline em{font-style:italic;color:var(--purp2);}
+
+.s3-right{position:relative;z-index:2;width:380px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;padding:40px 40px 40px 0;gap:0;}
+
+.pricing-card{width:100%;background:var(--bg3);border:1px solid var(--edge);border-radius:18px;overflow:hidden;opacity:0;transform:translateY(20px);}
+.pricing-top{padding:22px 24px;border-bottom:1px solid var(--edge);}
+.pricing-label{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;}
+.pricing-rows{display:flex;flex-direction:column;gap:9px;}
+.pricing-row{display:flex;align-items:flex-start;gap:10px;}
+.p-check{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.p-check.free{background:rgba(61,217,196,0.15);border:1px solid rgba(61,217,196,0.3);}
+.p-check.free svg{width:8px;height:8px;color:var(--teal);}
+.p-check.pro{background:rgba(124,106,247,0.15);border:1px solid rgba(124,106,247,0.3);}
+.p-check.pro svg{width:8px;height:8px;color:var(--purp2);}
+.p-text{font-size:12.5px;color:var(--muted);}
+.p-text strong{color:var(--text);font-weight:600;}
+.pricing-bottom{padding:16px 24px;display:flex;align-items:center;justify-content:space-between;background:rgba(124,106,247,0.06);}
+.price-tag{display:flex;align-items:baseline;gap:5px;}
+.price-main{font-size:32px;font-weight:800;color:var(--text);font-family:var(--mono);letter-spacing:-0.03em;}
+.price-lbl{font-size:12px;color:var(--muted);}
+.price-cta{padding:11px 24px;background:var(--purple);color:#fff;border-radius:9px;font-size:13px;font-weight:700;font-family:var(--sans);border:none;cursor:pointer;box-shadow:0 8px 24px rgba(124,106,247,0.4);}
+
+.social-proof{margin-top:16px;display:flex;align-items:center;gap:8px;opacity:0;}
+.stars{display:flex;gap:2px;}.star{font-size:14px;}
+.sp-text{font-size:12px;color:var(--muted);}
+
+/* Progress + transitions */
+.progress-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.06);z-index:100;}
+.progress-fill{height:100%;background:var(--purple);border-radius:0 2px 2px 0;width:0%;transition:none;}
+.transition-overlay{position:absolute;inset:0;background:var(--bg);opacity:0;z-index:50;pointer-events:none;}
+
+/* auto-scale stage to viewport */
+@media(max-width:980px){.stage{transform:scale(0.75);transform-origin:center;}}
+@media(max-width:740px){.stage{transform:scale(0.5);transform-origin:center;}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+  <div class="transition-overlay" id="overlay"></div>
+
+  <!-- ══ SCENE 1 — INTRO ══ -->
+  <div class="scene" id="s1">
+    <div class="s-bg-grad"></div><div class="s-grid"></div>
+    <div class="particle" style="width:3px;height:3px;bottom:18%;left:12%;animation-duration:5s;animation-delay:1s;"></div>
+    <div class="particle" style="width:2px;height:2px;bottom:35%;left:65%;animation-duration:6s;animation-delay:2.5s;"></div>
+    <div class="particle" style="width:4px;height:4px;bottom:12%;left:45%;animation-duration:4s;animation-delay:1.5s;"></div>
+    <div class="particle" style="width:2px;height:2px;bottom:50%;left:28%;animation-duration:7s;animation-delay:3.5s;"></div>
+
+    <div class="s1-left">
+      <div class="icon-wrap">
+        <div class="icon-ring"></div><div class="icon-ring" style="animation-delay:1.6s;"></div><div class="icon-ring" style="animation-delay:2.0s;"></div>
+        <div class="icon-reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+        </div>
+      </div>
+      <div class="brand-row"><div class="brand-name">LocalKit</div><div class="brand-dot"></div></div>
+      <div class="tool-badge">Screenshot Tool</div>
+      <div class="tagline">Capture any tab.<br><em>Instantly.</em></div>
+      <div class="sub-tagline">PNG or JPEG. No upload. No permissions needed.<br>Runs entirely inside your browser — 100% local.</div>
+      <div class="intro-pill"><div class="intro-pill-dot"></div><span>Nothing uploaded, ever</span></div>
+    </div>
+
+    <div class="s1-right">
+      <div style="position:relative;">
+        <div class="browser-deco">
+          <div class="browser-chrome">
+            <div class="b-dots"><div class="b-dot" style="background:#ff5f57"></div><div class="b-dot" style="background:#febc2e"></div><div class="b-dot" style="background:#28c840"></div></div>
+            <div class="b-url">localkit.app</div>
+          </div>
+          <div class="b-body">
+            <div class="b-nav">
+              <div class="b-logo"><div class="b-logo-sq"></div>localkit</div>
+              <div class="b-links"><span class="b-link">Docs</span><span class="b-link">Privacy</span><span class="b-cta-sm">Add to Chrome</span></div>
+            </div>
+            <div class="b-hero">
+              <div class="b-hero-tag">✦ FREE CHROME EXTENSION</div>
+              <div class="b-hero-title">Tools that work<br><span style="color:var(--purp2);">without the cloud</span></div>
+              <div class="b-hero-sub">Screenshot, merge PDFs, compress images — all local.</div>
+              <div class="b-hero-btn">Add to Chrome — Free</div>
+            </div>
+            <div class="b-stats"><div class="b-stat">✓ 100% local</div><div class="b-stat">✓ No account</div><div class="b-stat">✓ Works offline</div></div>
+          </div>
+        </div>
+        <div class="capture-overlay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCENE 2 — FUNCTIONALITY ══ -->
+  <div class="scene" id="s2">
+    <div class="s-bg-grad"></div>
+
+    <div class="s2-left">
+      <div class="scene-eyebrow" id="s2-eyebrow"><div class="eyebrow-line"></div><div class="eyebrow-text">How it works</div></div>
+      <div class="s2-heading" id="s2-heading">One click.<br><em>Zero cloud.</em></div>
+      <div class="s2-desc" id="s2-desc">Capture any open browser tab as PNG or JPEG. Download directly or copy to clipboard — all processed locally.</div>
+      <div class="feat-list" id="feat-list">
+        <div class="feat-item"><div class="feat-dot"></div><div class="feat-text"><strong>PNG & JPEG</strong> — pick your format</div></div>
+        <div class="feat-item"><div class="feat-dot"></div><div class="feat-text"><strong>Download or copy</strong> to clipboard instantly</div></div>
+        <div class="feat-item"><div class="feat-dot"></div><div class="feat-text"><strong>Full-page capture</strong> — 1366 × 768px</div></div>
+        <div class="feat-item"><div class="feat-dot"></div><div class="feat-text"><strong>Works offline</strong> — no internet needed</div></div>
+      </div>
+      <div class="local-pill" id="local-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Canvas API · zero network requests</span>
+      </div>
+    </div>
+
+    <div class="s2-right">
+      <div class="app-shell" id="app-shell">
+        <div class="app-bar">
+          <div class="atls"><div class="atl" style="background:#ff5f57"></div><div class="atl" style="background:#febc2e"></div><div class="atl" style="background:#28c840"></div></div>
+          <div class="app-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>localkit://screenshot</div>
+        </div>
+        <div class="app-body">
+          <div class="panel-left">
+            <div class="panel-sec-title">Capture</div>
+            <div style="font-size:7px;color:var(--dim);font-weight:600;font-family:var(--mono);margin-bottom:2px;">Target tab</div>
+            <div class="target-box">
+              <div class="target-row on"><div class="t-icon on"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div><div class="t-label on">localkit — Personal utili...</div></div>
+              <div class="target-row"><div class="t-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--dim)" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div><div class="t-label">New Tab</div></div>
+            </div>
+            <div style="font-size:7px;color:var(--dim);font-weight:600;font-family:var(--mono);margin-bottom:2px;">Format</div>
+            <div class="fmt-row"><div class="fmt-btn on">PNG</div><div class="fmt-btn">JPEG</div></div>
+            <div class="cap-btn" id="cap-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              Capture Tab
+            </div>
+            <div class="action-group" id="act-group" style="opacity:0;">
+              <div class="act-btn hi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="21" x2="12" y2="3"/></svg>Download</div>
+              <div class="act-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy to Clipboard</div>
+              <div class="act-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.72"/></svg>Capture Again</div>
+            </div>
+          </div>
+          <div class="panel-right" id="panel-right">
+            <div class="idle-state" id="idle-state">
+              <div class="idle-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--dim)" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+              <div class="idle-text">Hit Capture Tab →</div>
+            </div>
+            <div id="preview-state" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;position:relative;">
+              <div class="preview-frame">
+                <div class="prev-chrome">
+                  <div class="prev-dots"><div class="prev-dot" style="background:#ff5f57"></div><div class="prev-dot" style="background:#febc2e"></div><div class="prev-dot" style="background:#28c840"></div></div>
+                  <div class="prev-url-bar">localkit.app</div>
+                  <div style="margin-left:4px;width:16px;height:10px;border-radius:2px;background:var(--purple);display:flex;align-items:center;justify-content:center;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="21" x2="12" y2="3"/></svg></div>
+                </div>
+                <div class="prev-body">
+                  <div class="prev-nav"><div class="prev-logo">■■ localkit</div><div class="prev-links"><span class="prev-link">Docs</span><span class="prev-link">Privacy</span><span style="background:var(--purple);color:#fff;padding:2px 6px;border-radius:2px;font-size:6.5px;font-weight:700;">Add to Chrome</span></div></div>
+                  <div class="prev-hero"><div class="prev-tag">✦ FREE CHROME EXTENSION</div><div class="prev-title">Tools that work<br><span>without the cloud</span></div><div class="prev-sub">Screenshot, compress, merge — all local.</div><div class="prev-btn">Add to Chrome — Free</div></div>
+                  <div class="prev-feats"><div class="prev-feat">✓ 100% local</div><div class="prev-feat">✓ No account</div><div class="prev-feat">✓ Offline</div></div>
+                </div>
+              </div>
+              <div class="dim-tag" id="dim-tag">1366 × 768px</div>
+            </div>
+          </div>
+        </div>
+        <div class="app-status"><span class="as-ok" id="status-ok">Nothing uploaded.</span><span class="as-r">75%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCENE 3 — OUTRO ══ -->
+  <div class="scene" id="s3">
+    <div class="s-bg-grad"></div><div class="s-grid"></div>
+    <div class="s3-left">
+      <div class="outro-icon" id="outro-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+      <div class="outro-h1" id="outro-h1">Totally free.<br><em>Always.</em></div>
+      <div class="outro-sub" id="outro-sub">Screenshot is a free LocalKit tool. No sign-up, no cloud, no strings attached. Install once, use forever.</div>
+      <div class="outro-privacy" id="outro-privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Nothing ever leaves your browser</span></div>
+      <div class="final-tagline" id="final-tagline">Your screen.<br><em>Your machine.</em></div>
+    </div>
+    <div class="s3-right">
+      <div class="pricing-card" id="pricing-card">
+        <div class="pricing-top">
+          <div class="pricing-label">What you get</div>
+          <div class="pricing-rows">
+            <div class="pricing-row"><div class="p-check free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="p-text"><strong>Screenshot is free</strong> — capture, download, copy. No limits.</div></div>
+            <div class="pricing-row"><div class="p-check free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="p-text"><strong>6 free tools</strong> — Screenshot, Compress, PDF Merge, Passwords, Notes, Word Counter</div></div>
+            <div class="pricing-row"><div class="p-check pro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="p-text"><strong>Pro tools</strong> — Annotate, QR Code, Image Tools, PDF Split &amp; more for $9.</div></div>
+          </div>
+        </div>
+        <div class="pricing-bottom">
+          <div class="price-tag"><div class="price-main">Free</div></div>
+          <button class="price-cta">Add to Chrome →</button>
+        </div>
+      </div>
+      <div class="social-proof" id="social-proof"><div class="stars"><div class="star">⭐</div><div class="star">⭐</div><div class="star">⭐</div><div class="star">⭐</div><div class="star">⭐</div></div><div class="sp-text">100% local · works offline · no account</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const overlay=document.getElementById('overlay'),progress=document.getElementById('progress');
+
+// Auto-scale stage to viewport
+(function scaleStage(){
+  const stage=document.querySelector('.stage');
+  function resize(){const vw=window.innerWidth,vh=window.innerHeight,sw=960,sh=540;const s=Math.min(vw/sw,vh/sh)*0.92;stage.style.transform=`scale(${s})`;} resize();window.addEventListener('resize',resize);
+})();
+
+const DURATIONS=[4500,6500,5500],TOTAL=DURATIONS.reduce((a,b)=>a+b,0);
+let currentScene=0,sceneStart=0,started=false;
+function updateProgress(e){progress.style.width=Math.min(100,(e/TOTAL)*100)+'%';}
+function flash(cb){overlay.style.transition='opacity 0.18s ease';overlay.style.opacity='1';setTimeout(()=>{cb();overlay.style.transition='opacity 0.25s ease';overlay.style.opacity='0';},180);}
+function showScene(idx){document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));document.getElementById('s'+(idx+1)).classList.add('active');[animScene1,animScene2,animScene3][idx]();}
+function loop(ts){if(!started){started=true;sceneStart=ts;}const e=ts-sceneStart;let acc=0;for(let i=0;i<DURATIONS.length;i++){acc+=DURATIONS[i];if(e<acc){if(i!==currentScene)flash(()=>{currentScene=i;showScene(i);});break;}}if(e>=TOTAL){sceneStart=ts;flash(()=>{currentScene=0;showScene(0);});}updateProgress(e%TOTAL);requestAnimationFrame(loop);}
+
+function animScene1(){}
+
+function animScene2(){
+  const items=[
+    {id:'s2-eyebrow',t:'slideUp',delay:100},{id:'s2-heading',t:'slideUp',delay:250},
+    {id:'s2-desc',t:'slideUp',delay:400},{id:'feat-list',t:'slideUp',delay:550},{id:'local-pill',t:'fadeIn',delay:700},
+    {id:'app-shell',t:'appIn',delay:300},
+  ];
+  items.forEach(({id,t,delay})=>{
+    const el=document.getElementById(id);if(!el)return;
+    el.style.opacity='0';el.style.transform=t==='appIn'?'translateY(16px)':'translateY(10px)';
+    setTimeout(()=>anim(el,t),delay);
+  });
+  const idle=document.getElementById('idle-state'),prev=document.getElementById('preview-state'),acts=document.getElementById('act-group'),st=document.getElementById('status-ok');
+  idle.style.display='flex';prev.style.display='none';acts.style.opacity='0';st.textContent='Nothing uploaded.';
+  setTimeout(()=>{
+    const btn=document.getElementById('cap-btn');btn.style.background='#5a4bd4';setTimeout(()=>btn.style.background='var(--purple)',200);
+    idle.style.display='none';prev.style.display='flex';
+    st.textContent='Captured as PNG ✓ — zero network requests';
+    setTimeout(()=>{acts.style.transition='opacity 0.4s ease';acts.style.opacity='1';},400);
+  },2000);
+}
+
+function anim(el,type){if(!el)return;if(type==='slideUp'){el.style.transition='opacity 0.5s ease,transform 0.5s cubic-bezier(0.16,1,0.3,1)';el.style.transform='translateY(0)';el.style.opacity='1';}else if(type==='appIn'){el.style.transition='opacity 0.55s ease,transform 0.55s cubic-bezier(0.16,1,0.3,1)';el.style.transform='translateY(0)';el.style.opacity='1';}else if(type==='fadeIn'){el.style.transition='opacity 0.4s ease';el.style.opacity='1';}}
+
+function animScene3(){
+  const els={icon:'outro-icon',h1:'outro-h1',sub:'outro-sub',privacy:'outro-privacy',final:'final-tagline',card:'pricing-card',proof:'social-proof'};
+  Object.entries(els).forEach(([k,id])=>{const el=document.getElementById(id);if(!el)return;el.style.transition='none';el.style.opacity='0';if(k==='icon')el.style.transform='scale(0.7)';if(k==='card')el.style.transform='translateY(20px)';});
+  const delays={icon:100,h1:400,sub:650,privacy:900,final:1150,card:300,proof:1600};
+  Object.entries(delays).forEach(([k,d])=>{const id=els[k];setTimeout(()=>{const el=document.getElementById(id);if(!el)return;el.style.transition='opacity 0.55s ease,transform 0.55s cubic-bezier(0.16,1,0.3,1)';el.style.opacity='1';if(k==='icon')el.style.transform='scale(1)';if(k==='card')el.style.transform='translateY(0)';},d);});
+}
+
+document.querySelectorAll('#s2 .scene-eyebrow,#s2 .s2-heading,#s2 .s2-desc,#s2 .feat-list,#s2 .local-pill,#s2 .app-shell').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(10px)';});
+showScene(0);requestAnimationFrame(loop);
+</script>
+</body>
+</html>

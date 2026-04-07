@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>LocalKit Quick Notes — Desktop Reel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Figtree:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07060d;--bg2:#0e0c1a;--bg3:#161226;--bg4:#1e1a32;
+  --edge:#2d2850;--edgeb:#3d3870;--text:#e8e6f8;--muted:#8884b8;--dim:#514d7a;
+  --purple:#7c6af7;--purp2:#9b8cff;--purp3:#4a3fb5;
+  --teal:#3dd9c4;--rose:#f75d8a;--gold:#ffd166;--green:#4ade80;
+  --serif:'DM Serif Display',serif;--sans:'Figtree',sans-serif;--mono:'DM Mono',monospace;
+}
+html,body{width:100%;min-height:100vh;background:#04030a;display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:var(--sans);}
+.stage{position:relative;width:960px;height:540px;flex-shrink:0;overflow:hidden;border-radius:20px;
+  box-shadow:0 0 0 1px rgba(124,106,247,0.15),0 40px 100px rgba(0,0,0,0.9),0 0 80px rgba(124,106,247,0.10);
+  transform-origin:center;}
+.scene{position:absolute;inset:0;display:flex;align-items:center;opacity:0;pointer-events:none;}
+.scene.active{opacity:1;pointer-events:all;}
+.s-bg{position:absolute;inset:0;}
+.s-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(124,106,247,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,106,247,0.04) 1px,transparent 1px);background-size:36px 36px;}
+.particle{position:absolute;border-radius:50%;background:var(--purple);opacity:0;animation:float-up linear infinite;}
+@keyframes float-up{0%{opacity:0;transform:translateY(0) scale(0)}10%{opacity:0.6}90%{opacity:0.2}100%{opacity:0;transform:translateY(-140px) scale(0.3)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(44px)}to{opacity:1;transform:translateX(0)}}
+@keyframes iconIn{to{opacity:1;transform:scale(1) rotate(0deg)}}
+@keyframes ringPulse{0%{opacity:0.7;transform:scale(1)}100%{opacity:0;transform:scale(2.2)}}
+@keyframes blink{50%{opacity:0.3}}
+@keyframes cursorBlink{50%{opacity:0}}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══ SCENE 1 ══ */
+#s1{background:var(--bg);}
+#s1 .s-bg{background:radial-gradient(ellipse 500px 400px at 28% 50%,rgba(124,106,247,0.22) 0%,transparent 65%),radial-gradient(ellipse 350px 300px at 82% 75%,rgba(74,63,181,0.12) 0%,transparent 55%),radial-gradient(ellipse 280px 280px at 80% 15%,rgba(61,217,196,0.06) 0%,transparent 55%);}
+
+.s1-left{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:0 56px;}
+.s1-right{position:relative;z-index:2;flex:1;display:flex;align-items:center;justify-content:center;padding:0 40px 0 0;}
+
+.icon-wrap{position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:26px;}
+.icon-reveal{width:80px;height:80px;background:var(--purple);border-radius:20px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 1px rgba(255,255,255,0.08),0 16px 50px rgba(124,106,247,0.55),0 0 100px rgba(124,106,247,0.25);
+  opacity:0;transform:scale(0.5) rotate(-8deg);animation:iconIn 0.9s cubic-bezier(0.34,1.56,0.64,1) 0.3s forwards;}
+.icon-reveal svg{width:40px;height:40px;}
+.icon-ring{position:absolute;width:80px;height:80px;border-radius:20px;border:1.5px solid rgba(124,106,247,0.45);animation:ringPulse 2s ease-out 1.2s infinite;opacity:0;}
+.icon-ring:nth-child(2){animation-delay:1.6s;}.icon-ring:nth-child(3){animation-delay:2.0s;}
+
+.brand-row{display:flex;align-items:center;gap:10px;opacity:0;animation:slideUp 0.6s ease 1.1s forwards;}
+.brand-name{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.03em;}
+.brand-dot{width:5px;height:5px;border-radius:50%;background:var(--purple);margin-top:3px;}
+.tool-badge{margin-top:12px;display:inline-flex;padding:5px 16px;border-radius:20px;background:rgba(124,106,247,0.12);border:1px solid rgba(124,106,247,0.3);font-size:11px;font-weight:600;font-family:var(--mono);color:var(--purp2);letter-spacing:0.08em;opacity:0;animation:slideUp 0.5s ease 1.35s forwards;}
+.tagline{margin-top:20px;font-family:var(--serif);font-size:52px;line-height:1.08;letter-spacing:-0.03em;color:var(--text);opacity:0;animation:slideUp 0.6s ease 1.6s forwards;}
+.tagline em{font-style:italic;color:var(--purp2);}
+.sub-tagline{margin-top:16px;font-size:14px;color:var(--muted);line-height:1.65;max-width:360px;opacity:0;animation:slideUp 0.5s ease 1.9s forwards;}
+.intro-pill{margin-top:28px;display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:20px;background:var(--bg3);border:1px solid var(--edge);opacity:0;animation:slideUp 0.5s ease 2.15s forwards;}
+.intro-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:blink 1.2s ease infinite;}
+.intro-pill span{font-size:11px;font-weight:600;color:var(--teal);font-family:var(--mono);letter-spacing:0.06em;}
+
+/* Decorative notes cards */
+.notes-deco{width:400px;display:flex;flex-direction:column;gap:10px;opacity:0;animation:slideLeft 0.7s cubic-bezier(0.16,1,0.3,1) 1.4s forwards;}
+
+.note-card{background:var(--bg2);border:1px solid var(--edge);border-radius:12px;padding:15px 17px;position:relative;}
+.note-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:12px 0 0 12px;}
+.note-card.purple::before{background:var(--purple);}
+.note-card.teal::before{background:var(--teal);}
+.note-card.gold::before{background:var(--gold);}
+.note-time{font-size:7.5px;font-family:var(--mono);color:var(--dim);margin-bottom:5px;}
+.note-title{font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.note-body{font-size:10px;color:var(--muted);line-height:1.55;}
+.note-tag{display:inline-flex;margin-top:7px;padding:2px 8px;border-radius:4px;font-size:8px;font-weight:600;font-family:var(--mono);}
+.note-tag.purple{background:rgba(124,106,247,0.12);color:var(--purp2);}
+.note-tag.teal{background:rgba(61,217,196,0.1);color:var(--teal);}
+.note-tag.gold{background:rgba(255,209,102,0.1);color:var(--gold);}
+
+/* ══ SCENE 2 ══ */
+#s2{background:var(--bg);}
+#s2 .s-bg{background:radial-gradient(ellipse 500px 400px at 18% 50%,rgba(124,106,247,0.14) 0%,transparent 65%),radial-gradient(ellipse 400px 300px at 82% 60%,rgba(74,63,181,0.10) 0%,transparent 55%);}
+
+.s2-left{position:relative;z-index:2;width:260px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;padding:36px 30px;border-right:1px solid var(--edge);align-self:stretch;background:rgba(0,0,0,0.12);}
+.scene-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:16px;opacity:0;}
+.eyebrow-line{width:24px;height:1.5px;background:var(--purple);}
+.eyebrow-text{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);font-family:var(--mono);}
+.s2-heading{font-family:var(--serif);font-size:32px;line-height:1.1;letter-spacing:-0.02em;color:var(--text);opacity:0;}
+.s2-heading em{font-style:italic;color:var(--purp2);}
+.s2-desc{margin-top:11px;font-size:12px;color:var(--muted);line-height:1.6;opacity:0;}
+.feat-list{margin-top:18px;display:flex;flex-direction:column;gap:8px;opacity:0;}
+.feat-item{display:flex;align-items:center;gap:9px;}
+.feat-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);flex-shrink:0;}
+.feat-text{font-size:12px;color:var(--muted);}
+.feat-text strong{color:var(--text);}
+.local-pill{margin-top:20px;display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:20px;background:rgba(61,217,196,0.08);border:1px solid rgba(61,217,196,0.2);opacity:0;}
+.local-pill svg{width:11px;height:11px;color:var(--teal);}
+.local-pill span{font-size:10px;font-weight:600;color:var(--teal);font-family:var(--mono);}
+
+.s2-right{position:relative;z-index:2;flex:1;display:flex;align-items:center;justify-content:center;padding:20px 24px;}
+.app-shell{width:100%;max-width:600px;height:100%;background:var(--bg2);border:1px solid var(--edge);border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,0.04),0 20px 60px rgba(0,0,0,0.7);display:flex;flex-direction:column;}
+.app-bar{height:32px;background:var(--bg3);border-bottom:1px solid var(--edge);display:flex;align-items:center;padding:0 11px;gap:8px;flex-shrink:0;}
+.atls{display:flex;gap:4px;}.atl{width:8px;height:8px;border-radius:50%;}
+.app-url{flex:1;height:18px;background:rgba(255,255,255,0.04);border:1px solid var(--edge);border-radius:3px;display:flex;align-items:center;padding:0 7px;gap:5px;font-size:8px;font-family:var(--mono);color:var(--dim);}
+.app-url svg{width:7px;height:7px;color:var(--teal);}
+
+/* Notes app layout — sidebar + editor */
+.notes-layout{display:flex;flex:1;overflow:hidden;}
+
+/* Sidebar */
+.notes-sidebar{width:180px;flex-shrink:0;border-right:1px solid var(--edge);display:flex;flex-direction:column;background:var(--bg3);}
+.sidebar-header{padding:10px 11px;border-bottom:1px solid var(--edge);display:flex;align-items:center;justify-content:space-between;}
+.sidebar-title{font-size:9px;font-weight:700;color:var(--text);letter-spacing:0.04em;}
+.new-note-btn{width:20px;height:20px;border-radius:5px;background:var(--purple);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.new-note-btn svg{width:10px;height:10px;color:#fff;}
+
+.notes-list{flex:1;overflow:hidden;padding:6px;}
+.note-item{padding:7px 8px;border-radius:6px;margin-bottom:3px;cursor:pointer;border-left:2px solid transparent;transition:background 0.15s;}
+.note-item.active{background:rgba(124,106,247,0.14);border-left-color:var(--purple);}
+.note-item.teal-a{border-left-color:var(--teal);}
+.note-item.gold-a{border-left-color:var(--gold);}
+.note-item-title{font-size:9px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.note-item-preview{font-size:7.5px;color:var(--dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.note-item-time{font-size:7px;font-family:var(--mono);color:var(--dim);margin-top:3px;}
+
+.sidebar-footer{padding:7px;border-top:1px solid var(--edge);}
+.notes-count{font-size:8px;font-family:var(--mono);color:var(--dim);text-align:center;}
+
+/* Editor area */
+.notes-editor{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.editor-toolbar{height:30px;border-bottom:1px solid var(--edge);display:flex;align-items:center;padding:0 10px;gap:6px;background:var(--bg2);}
+.tb-btn{width:20px;height:20px;border-radius:3px;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.tb-btn:hover{background:var(--bg3);}
+.tb-btn svg{width:10px;height:10px;color:var(--dim);}
+.tb-divider{width:1px;height:14px;background:var(--edge);margin:0 2px;}
+
+.editor-area{flex:1;padding:14px 16px;overflow:hidden;position:relative;}
+.note-editor-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:8px;font-family:var(--sans);}
+.note-editor-body{font-size:11px;color:var(--muted);line-height:1.7;position:relative;}
+.note-editor-body p{margin-bottom:5px;}
+.note-editor-body .highlight{color:var(--purp2);}
+.cursor-line{display:inline-block;width:1.5px;height:12px;background:var(--purple);vertical-align:middle;margin-left:1px;animation:cursorBlink 0.9s step-end infinite;}
+
+.editor-status{height:22px;background:var(--bg3);border-top:1px solid var(--edge);display:flex;align-items:center;padding:0 10px;gap:10px;justify-content:space-between;flex-shrink:0;}
+.es-left{display:flex;align-items:center;gap:8px;}
+.es-saved{font-size:7.5px;font-family:var(--mono);color:var(--teal);font-weight:600;display:flex;align-items:center;gap:4px;}
+.es-saved svg{width:8px;height:8px;}
+.es-words{font-size:7px;font-family:var(--mono);color:var(--dim);}
+.es-local{font-size:7px;font-family:var(--mono);color:var(--dim);}
+
+/* Typing animation */
+.typing-text{display:inline;}
+
+/* ══ SCENE 3 ══ */
+#s3{background:var(--bg);}
+#s3 .s-bg{background:radial-gradient(ellipse 600px 500px at 50% 50%,rgba(124,106,247,0.18) 0%,transparent 65%),radial-gradient(ellipse 400px 300px at 10% 80%,rgba(74,63,181,0.12) 0%,transparent 55%),radial-gradient(ellipse 300px 400px at 90% 10%,rgba(61,217,196,0.07) 0%,transparent 55%);}
+#s3 .s-grid{background-image:linear-gradient(rgba(124,106,247,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(124,106,247,0.05) 1px,transparent 1px);background-size:44px 44px;}
+.s3-left{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;padding:46px 52px;}
+.outro-icon{width:64px;height:64px;background:var(--purple);border-radius:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px rgba(255,255,255,0.08),0 14px 40px rgba(124,106,247,0.50),0 0 80px rgba(124,106,247,0.22);opacity:0;transform:scale(0.7);margin-bottom:22px;}
+.outro-icon svg{width:30px;height:30px;}
+.outro-h1{font-family:var(--serif);font-size:54px;line-height:1.0;letter-spacing:-0.03em;color:var(--text);opacity:0;}
+.outro-h1 em{font-style:italic;color:var(--purp2);}
+.outro-sub{margin-top:14px;font-size:15px;color:var(--muted);line-height:1.65;max-width:380px;opacity:0;}
+.outro-privacy{margin-top:22px;display:inline-flex;align-items:center;gap:8px;opacity:0;}
+.outro-privacy svg{width:14px;height:14px;color:var(--teal);}
+.outro-privacy span{font-size:12px;font-weight:600;color:var(--teal);}
+.final-tagline{margin-top:28px;font-family:var(--serif);font-size:28px;line-height:1.2;letter-spacing:-0.02em;color:var(--text);opacity:0;}
+.final-tagline em{font-style:italic;color:var(--purp2);}
+.s3-right{position:relative;z-index:2;width:380px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;padding:36px 36px 36px 0;}
+.pricing-card{width:100%;background:var(--bg3);border:1px solid var(--edge);border-radius:18px;overflow:hidden;opacity:0;transform:translateY(20px);}
+.pricing-top{padding:20px 22px;border-bottom:1px solid var(--edge);}
+.pricing-label{font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:11px;}
+.pricing-rows{display:flex;flex-direction:column;gap:9px;}
+.pricing-row{display:flex;align-items:flex-start;gap:10px;}
+.p-check{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.p-check.free{background:rgba(61,217,196,0.15);border:1px solid rgba(61,217,196,0.3);}
+.p-check.free svg{width:8px;height:8px;color:var(--teal);}
+.p-check.pro{background:rgba(124,106,247,0.15);border:1px solid rgba(124,106,247,0.3);}
+.p-check.pro svg{width:8px;height:8px;color:var(--purp2);}
+.p-text{font-size:12.5px;color:var(--muted);}
+.p-text strong{color:var(--text);font-weight:600;}
+.pricing-bottom{padding:14px 22px;display:flex;align-items:center;justify-content:space-between;background:rgba(124,106,247,0.06);}
+.price-tag{display:flex;align-items:baseline;gap:5px;}
+.price-main{font-size:30px;font-weight:800;color:var(--text);font-family:var(--mono);letter-spacing:-0.03em;}
+.price-cta{padding:10px 22px;background:var(--purple);color:#fff;border-radius:9px;font-size:13px;font-weight:700;font-family:var(--sans);border:none;cursor:pointer;box-shadow:0 8px 24px rgba(124,106,247,0.4);}
+.social-proof{margin-top:14px;display:flex;align-items:center;gap:8px;opacity:0;}
+.stars{display:flex;gap:2px;}.star{font-size:14px;}
+.sp-text{font-size:12px;color:var(--muted);}
+
+.progress-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.06);z-index:100;}
+.progress-fill{height:100%;background:var(--purple);border-radius:0 2px 2px 0;width:0%;transition:none;}
+.transition-overlay{position:absolute;inset:0;background:var(--bg);opacity:0;z-index:50;pointer-events:none;}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+  <div class="transition-overlay" id="overlay"></div>
+
+  <!-- ══ SCENE 1 — INTRO ══ -->
+  <div class="scene" id="s1">
+    <div class="s-bg"></div><div class="s-grid"></div>
+    <div class="particle" style="width:3px;height:3px;bottom:18%;left:12%;animation-duration:5s;animation-delay:1s;"></div>
+    <div class="particle" style="width:2px;height:2px;bottom:35%;left:65%;animation-duration:6s;animation-delay:2.5s;"></div>
+    <div class="particle" style="width:4px;height:4px;bottom:12%;left:45%;animation-duration:4s;animation-delay:1.5s;"></div>
+
+    <div class="s1-left">
+      <div class="icon-wrap">
+        <div class="icon-ring"></div><div class="icon-ring" style="animation-delay:1.6s;"></div><div class="icon-ring" style="animation-delay:2.0s;"></div>
+        <div class="icon-reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+        </div>
+      </div>
+      <div class="brand-row"><div class="brand-name">LocalKit</div><div class="brand-dot"></div></div>
+      <div class="tool-badge">Quick Notes</div>
+      <div class="tagline">Jot it down.<br><em>Instantly.</em></div>
+      <div class="sub-tagline">A fast, distraction-free scratchpad that lives<br>in your browser. Notes saved locally. No cloud.</div>
+      <div class="intro-pill"><div class="intro-pill-dot"></div><span>Saved locally in your browser</span></div>
+    </div>
+
+    <div class="s1-right">
+      <div class="notes-deco">
+        <div class="note-card purple">
+          <div class="note-time">Just now</div>
+          <div class="note-title">LocalKit launch checklist</div>
+          <div class="note-body">Ship the PDF merge update. Review QR tool feedback from beta users. Update changelog and push to production.</div>
+          <div class="note-tag purple">work</div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <div class="note-card teal" style="flex:1;">
+            <div class="note-time">2h ago</div>
+            <div class="note-title">Ideas</div>
+            <div class="note-body">Add batch compress. Dark mode toggle for notes.</div>
+            <div class="note-tag teal">ideas</div>
+          </div>
+          <div class="note-card gold" style="flex:1;">
+            <div class="note-time">Yesterday</div>
+            <div class="note-title">Meeting notes</div>
+            <div class="note-body">Privacy-first approach. No telemetry. Ship v1.4 this week.</div>
+            <div class="note-tag gold">meeting</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCENE 2 — FUNCTIONALITY ══ -->
+  <div class="scene" id="s2">
+    <div class="s-bg"></div>
+    <div class="s2-left">
+      <div class="scene-eyebrow" id="s2-eyebrow"><div class="eyebrow-line"></div><div class="eyebrow-text">How it works</div></div>
+      <div class="s2-heading" id="s2-heading">Open. Type.<br><em>Auto-saved.</em></div>
+      <div class="s2-desc" id="s2-desc">Quick Notes is a fast scratchpad that opens instantly inside your browser extension. Your notes stay in localStorage — no server, no sync, no account.</div>
+      <div class="feat-list" id="feat-list">
+        <div class="feat-item"><div class="feat-dot"></div><div class="feat-text"><strong>Multiple notes</strong> — organized sidebar</div></div>
+        <div class="feat-item"><div class="feat-dot"></div><div class="feat-text"><strong>Auto-saves</strong> as you type, every keystroke</div></div>
+        <div class="feat-item"><div class="feat-dot"></div><div class="feat-text"><strong>Markdown-friendly</strong> formatting support</div></div>
+        <div class="feat-item"><div class="feat-dot"></div><div class="feat-text"><strong>Works offline</strong> — no internet needed ever</div></div>
+      </div>
+      <div class="local-pill" id="local-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>localStorage · zero network requests</span>
+      </div>
+    </div>
+
+    <div class="s2-right">
+      <div class="app-shell" id="app-shell">
+        <div class="app-bar">
+          <div class="atls"><div class="atl" style="background:#ff5f57"></div><div class="atl" style="background:#febc2e"></div><div class="atl" style="background:#28c840"></div></div>
+          <div class="app-url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>localkit://quick-notes</div>
+        </div>
+
+        <div class="notes-layout">
+          <!-- Sidebar -->
+          <div class="notes-sidebar">
+            <div class="sidebar-header">
+              <span class="sidebar-title">My Notes</span>
+              <div class="new-note-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+            </div>
+            <div class="notes-list">
+              <div class="note-item active" id="ni1">
+                <div class="note-item-title">LocalKit launch checklist</div>
+                <div class="note-item-preview">Ship the PDF merge update...</div>
+                <div class="note-item-time">Just now</div>
+              </div>
+              <div class="note-item teal-a" id="ni2" style="opacity:0;">
+                <div class="note-item-title">Product ideas</div>
+                <div class="note-item-preview">Add batch compress mode...</div>
+                <div class="note-item-time">2h ago</div>
+              </div>
+              <div class="note-item gold-a" id="ni3" style="opacity:0;">
+                <div class="note-item-title">Meeting notes</div>
+                <div class="note-item-preview">Privacy-first approach...</div>
+                <div class="note-item-time">Yesterday</div>
+              </div>
+              <div class="note-item" id="ni4" style="opacity:0;">
+                <div class="note-item-title">Untitled note</div>
+                <div class="note-item-preview">Start writing...</div>
+                <div class="note-item-time">Just now</div>
+              </div>
+            </div>
+            <div class="sidebar-footer"><div class="notes-count" id="notes-count">4 notes · local</div></div>
+          </div>
+
+          <!-- Editor -->
+          <div class="notes-editor">
+            <div class="editor-toolbar">
+              <div class="tb-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div>
+              <div class="tb-divider"></div>
+              <div class="tb-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+              <div class="tb-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></div>
+              <div class="tb-divider"></div>
+              <div style="margin-left:auto;font-size:7.5px;font-family:var(--mono);color:var(--dim);" id="word-count">47 words</div>
+            </div>
+
+            <div class="editor-area">
+              <div class="note-editor-title" id="editor-title">LocalKit launch checklist</div>
+              <div class="note-editor-body" id="editor-body">
+                <p>Ship the <span class="highlight">PDF merge update</span> — confirmed with team.</p>
+                <p>Review QR tool feedback from beta users. Three bug reports to address.</p>
+                <p>Update changelog and push to production before EOD.</p>
+                <p id="typing-line"></p>
+              </div>
+            </div>
+
+            <div class="editor-status">
+              <div class="es-left">
+                <div class="es-saved" id="save-status">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  Saved
+                </div>
+                <div class="es-words" id="es-words">47 words</div>
+              </div>
+              <div class="es-local">localStorage · offline</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCENE 3 — OUTRO ══ -->
+  <div class="scene" id="s3">
+    <div class="s-bg"></div><div class="s-grid"></div>
+    <div class="s3-left">
+      <div class="outro-icon" id="outro-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+      </div>
+      <div class="outro-h1" id="outro-h1">Totally free.<br><em>Always.</em></div>
+      <div class="outro-sub" id="outro-sub">Quick Notes is a free LocalKit tool. No sign-up, no cloud sync, no tracking. Your thoughts stay yours.</div>
+      <div class="outro-privacy" id="outro-privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Notes stay in your browser, nowhere else</span></div>
+      <div class="final-tagline" id="final-tagline">Your thoughts.<br><em>Your machine.</em></div>
+    </div>
+    <div class="s3-right">
+      <div class="pricing-card" id="pricing-card">
+        <div class="pricing-top">
+          <div class="pricing-label">What you get</div>
+          <div class="pricing-rows">
+            <div class="pricing-row"><div class="p-check free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="p-text"><strong>Quick Notes is free</strong> — unlimited notes, auto-save, offline. Always.</div></div>
+            <div class="pricing-row"><div class="p-check free"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="p-text"><strong>6 free tools</strong> — Screenshot, Compress, PDF Merge, Passwords, Notes, Word Counter</div></div>
+            <div class="pricing-row"><div class="p-check pro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><div class="p-text"><strong>Pro tools</strong> — Annotate, QR Code, PDF Split &amp; more for $9 one-time.</div></div>
+          </div>
+        </div>
+        <div class="pricing-bottom">
+          <div class="price-tag"><div class="price-main">Free</div></div>
+          <button class="price-cta">Add to Chrome →</button>
+        </div>
+      </div>
+      <div class="social-proof" id="social-proof"><div class="stars"><div class="star">⭐</div><div class="star">⭐</div><div class="star">⭐</div><div class="star">⭐</div><div class="star">⭐</div></div><div class="sp-text">100% local · works offline · no account</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const overlay=document.getElementById('overlay'),progress=document.getElementById('progress');
+(function(){const stage=document.querySelector('.stage');function r(){const s=Math.min(window.innerWidth/960,window.innerHeight/540)*0.92;stage.style.transform=`scale(${s})`;}r();window.addEventListener('resize',r);})();
+const DURATIONS=[4500,8000,5500],TOTAL=DURATIONS.reduce((a,b)=>a+b,0);
+let currentScene=0,sceneStart=0,started=false;
+function updateProgress(e){progress.style.width=Math.min(100,(e/TOTAL)*100)+'%';}
+function flash(cb){overlay.style.transition='opacity 0.18s ease';overlay.style.opacity='1';setTimeout(()=>{cb();overlay.style.transition='opacity 0.25s ease';overlay.style.opacity='0';},180);}
+function showScene(idx){document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));document.getElementById('s'+(idx+1)).classList.add('active');[animScene1,animScene2,animScene3][idx]();}
+function loop(ts){if(!started){started=true;sceneStart=ts;}const e=ts-sceneStart;let acc=0;for(let i=0;i<DURATIONS.length;i++){acc+=DURATIONS[i];if(e<acc){if(i!==currentScene)flash(()=>{currentScene=i;showScene(i);});break;}}if(e>=TOTAL){sceneStart=ts;flash(()=>{currentScene=0;showScene(0);});}updateProgress(e%TOTAL);requestAnimationFrame(loop);}
+
+function animScene1(){}
+
+let typingTimer=null;
+function animScene2(){
+  ['s2-eyebrow','s2-heading','s2-desc','feat-list','local-pill'].forEach((id,i)=>{
+    const el=document.getElementById(id);if(!el)return;
+    el.style.opacity='0';el.style.transform='translateY(10px)';
+    setTimeout(()=>anim(el,'slideUp'),100+i*150);
+  });
+  const as=document.getElementById('app-shell');as.style.opacity='0';as.style.transform='translateY(14px)';
+  setTimeout(()=>anim(as,'appIn'),300);
+
+  // Reset note items
+  ['ni2','ni3','ni4'].forEach(id=>{const el=document.getElementById(id);el.style.opacity='0';el.style.transition='none';});
+  document.getElementById('typing-line').innerHTML='';
+  document.getElementById('save-status').style.color='var(--teal)';
+  document.getElementById('save-status').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="8" height="8"><polyline points="20 6 9 17 4 12"/></svg>Saved';
+
+  // Stagger note items appearing
+  setTimeout(()=>fadeIn('ni2'),1200);
+  setTimeout(()=>fadeIn('ni3'),1700);
+
+  // Start typing animation
+  if(typingTimer)clearTimeout(typingTimer);
+  setTimeout(()=>startTyping(),2000);
+
+  // Create new note
+  setTimeout(()=>{
+    fadeIn('ni4');
+    // Switch active note
+    document.getElementById('ni1').classList.remove('active');
+    document.getElementById('ni4').classList.add('active');
+    document.getElementById('editor-title').textContent='Untitled note';
+    document.getElementById('editor-body').innerHTML='<p id="typing-line"></p>';
+    document.getElementById('es-words').textContent='0 words';
+    document.getElementById('word-count').textContent='0 words';
+    // Start typing new note
+    setTimeout(()=>typeNewNote(),200);
+  },4800);
+}
+
+function fadeIn(id){
+  const el=document.getElementById(id);if(!el)return;
+  el.style.transition='opacity 0.4s ease,transform 0.4s cubic-bezier(0.16,1,0.3,1)';
+  el.style.transform='translateY(4px)';
+  setTimeout(()=>{el.style.opacity='1';el.style.transform='translateY(0)';},10);
+}
+
+const typingText = "Check analytics dashboard — conversion up 12% this week. ";
+let tIdx=0,tInterval=null;
+function startTyping(){
+  const el=document.getElementById('typing-line');if(!el)return;
+  el.innerHTML='<span class="cursor-line"></span>';
+  tIdx=0;
+  if(tInterval)clearInterval(tInterval);
+  tInterval=setInterval(()=>{
+    if(!document.getElementById('typing-line'))return clearInterval(tInterval);
+    if(tIdx<typingText.length){
+      const cursor=document.querySelector('#typing-line .cursor-line');
+      if(cursor){cursor.parentNode.insertBefore(document.createTextNode(typingText[tIdx]),cursor);}
+      tIdx++;
+      // Update save indicator
+      document.getElementById('save-status').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="8" height="8" style="color:var(--dim)"><circle cx="12" cy="12" r="10"/></svg><span style="color:var(--dim)">Saving...</span>';
+      setTimeout(()=>{
+        const ss=document.getElementById('save-status');
+        if(ss)ss.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="8" height="8"><polyline points="20 6 9 17 4 12"/></svg>Saved';
+      },400);
+    } else {
+      clearInterval(tInterval);
+    }
+  },55);
+}
+
+const newNoteText="Meeting with design team tomorrow at 10am. Review new onboarding flow.";
+let tnIdx=0,tnInterval=null;
+function typeNewNote(){
+  const el=document.getElementById('typing-line');if(!el)return;
+  el.innerHTML='<span class="cursor-line"></span>';
+  tnIdx=0;
+  if(tnInterval)clearInterval(tnInterval);
+  let wCount=0;
+  tnInterval=setInterval(()=>{
+    if(!document.getElementById('typing-line'))return clearInterval(tnInterval);
+    if(tnIdx<newNoteText.length){
+      const cursor=document.querySelector('#typing-line .cursor-line');
+      if(cursor){const t=document.createTextNode(newNoteText[tnIdx]);cursor.parentNode.insertBefore(t,cursor);}
+      if(newNoteText[tnIdx]===' ')wCount++;
+      const wc=(wCount+1)+' word'+(wCount>0?'s':'');
+      const ws=document.getElementById('es-words');const ww=document.getElementById('word-count');
+      if(ws)ws.textContent=wc;if(ww)ww.textContent=wc;
+      tnIdx++;
+    } else {
+      clearInterval(tnInterval);
+    }
+  },60);
+}
+
+function anim(el,type){if(!el)return;if(type==='slideUp'){el.style.transition='opacity 0.5s ease,transform 0.5s cubic-bezier(0.16,1,0.3,1)';el.style.transform='translateY(0)';el.style.opacity='1';}else if(type==='appIn'){el.style.transition='opacity 0.55s ease,transform 0.55s cubic-bezier(0.16,1,0.3,1)';el.style.transform='translateY(0)';el.style.opacity='1';}}
+
+function animScene3(){
+  if(tInterval)clearInterval(tInterval);if(tnInterval)clearInterval(tnInterval);
+  const map={icon:{id:'outro-icon',scale:true},h1:{id:'outro-h1'},sub:{id:'outro-sub'},privacy:{id:'outro-privacy'},final:{id:'final-tagline'},card:{id:'pricing-card',slide:true},proof:{id:'social-proof'}};
+  const delays=[100,400,650,900,1150,280,1600];
+  Object.entries(map).forEach(([k,cfg],i)=>{const el=document.getElementById(cfg.id);if(!el)return;el.style.transition='none';el.style.opacity='0';if(cfg.scale)el.style.transform='scale(0.7)';if(cfg.slide)el.style.transform='translateY(20px)';setTimeout(()=>{el.style.transition='opacity 0.55s ease,transform 0.55s cubic-bezier(0.16,1,0.3,1)';el.style.opacity='1';if(cfg.scale)el.style.transform='scale(1)';if(cfg.slide)el.style.transform='translateY(0)';},delays[i]);});
+}
+
+showScene(0);requestAnimationFrame(loop);
+</script>
+</body>
+</html>
