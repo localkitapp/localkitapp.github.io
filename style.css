@@ -1,4 +1,4 @@
-/* localkit docs — shared styles
+/* LocalKit docs — shared styles
    Works for index.html, privacy.html, and all tool doc pages */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
