@@ -6,6 +6,13 @@
   <title>LocalKit — Personal utilities that run locally</title>
   <meta name="description" content="7 personal utilities that run entirely in your browser. Screenshot, PDF merge, image compression, notes, passwords, word counter and QR codes. Nothing uploaded." />
   <link rel="stylesheet" href="style.css" />
+
+
+<!-- LocalKit Gumroad Buy Widget — Full Styled Version -->
+<script src="https://gumroad.com/js/gumroad.js"></script>
+
+
+
 </head>
 <body>
 
@@ -20,6 +27,7 @@
       </svg>
       <span class="nav-name">localkit</span>
     </a>
+    
     <div class="nav-links">
       <a href="docs.html">Docs</a>
       <a href="privacy.html">Privacy</a>
@@ -30,10 +38,14 @@
   </nav>
 
   <!-- ── Hero ── -->
+   <div class="container-title">
+
+
   <div class="hero">
-    <div class="hero-eyebrow">Free Chrome Extension</div>
+    <div class="hero-eyebrow">Chrome Extension</div>
     <h1>Tools that work<br /><span>without the cloud</span></h1>
     <p>Screenshot, merge PDFs, compress images, generate passwords and more — all running locally in your browser. Nothing uploaded. Works offline.</p>
+    
     <div class="hero-actions">
       <a class="btn-primary" href="https://chromewebstore.google.com/detail/localkit/hbgcjifbgdlmcbdebkghdgncdcjgcfod" target="_blank">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -55,7 +67,34 @@
       </svg>
       100% local · no account · no tracking · open to inspect
     </div>
+
+<div class="lk-buy-widget">
+  <div id="lk-counter" class="lk-counter early">⚡ Loading…</div>
+
+
+  <div class="lk-price-row">
+    <div class="lk-price-current" id="lk-price">$9</div>
+    <div>
+      <div class="lk-price-was" id="lk-was">$28</div>
+      <div class="lk-price-tag">one-time · no subscription</div>
+    </div>
   </div>
+
+  <a id="lk-buy-btn"
+     class="lk-btn "
+     href="https://localtoolkit.gumroad.com/l/purchase"
+     data-gumroad-overlay-checkout="true">
+    Get LocalKit Pro →
+  </a>
+
+  <p class="lk-note" id="lk-note">Instant access · Works offline · No account needed</p>
+
+</div>
+  </div>
+
+   </div>
+
+  
 
   <!-- ── Feature strip ── -->
   <div class="page-wide">
@@ -271,4 +310,52 @@
   </footer>
 
 </body>
+
+<script>
+(async () => {
+  // ── CONFIG ─────────────────────────────
+  const ID_EARLY  = 'purchase';   // ← CHANGE THIS
+  const ID_REGULAR = 'pro';  // ← CHANGE THIS
+  // ──────────────────────────────────────
+
+  let sold = 0, limit = 100, p9 = 9, p28 = 28;
+
+  try {
+    const d = await (await fetch('/sales-count.json?t=' + Date.now())).json();
+    sold = d.earlybird_sold; limit = d.earlybird_limit;
+    p9 = d.earlybird_price; p28 = d.regular_price;
+  } catch(e) { sold = limit; } // fallback: show regular price
+
+  const isEarly   = sold < limit;
+  const left      = Math.max(0, limit - sold);
+  const productId = isEarly ? ID_EARLY : ID_REGULAR;
+  const price     = isEarly ? p9 : p28;
+
+  // Price display
+  document.getElementById('lk-price').textContent = `$${price}`;
+  document.getElementById('lk-was').style.display = isEarly ? 'block' : 'none';
+
+  // Counter badge
+  const badge = document.getElementById('lk-counter');
+  if (!isEarly) {
+    badge.className = 'lk-counter sold-out';
+  } else if (left <= 20) {
+    badge.className = 'lk-counter urgent';
+    badge.innerHTML = `🔥 Only <strong>${left}</strong> left at $${p9} — then $${p28} forever`;
+  } else {
+    badge.innerHTML = `⚡ <strong>${left}</strong> of ${limit} spots left at $${p9}`;
+  }
+
+  // Button link + label
+  const btn = document.getElementById('lk-buy-btn');
+  btn.href = `https://localtoolkit.gumroad.com/l/${productId}`;
+  btn.textContent = isEarly ? `Get LocalKit Pro — $${price} →` : `Get LocalKit Pro — $${price} →`;
+
+  // Note
+  document.getElementById('lk-note').textContent = `$${price} one-time · Instant access · Works offline`;
+
+  // Re-init Gumroad so overlay works after dynamic href
+  if (window.GumroadOverlay) window.GumroadOverlay.init();
+})();
+</script>
 </html>

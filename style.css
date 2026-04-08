@@ -118,8 +118,9 @@ nav {
 /* ── Hero ── */
 .hero {
   text-align: center;
-  padding: 80px 32px 64px;
+  /* padding: 80px 32px 64px; */
   max-width: 720px;
+  padding-top: 10px;
   margin: 0 auto;
 }
 
@@ -678,4 +679,96 @@ footer a:hover { color: var(--text); }
     width: 8px;
     height: 8px;
   }
+}
+
+.container-title {
+  display: flex;
+  
+}
+
+/* Widget styles — safe to customize */
+.lk-buy-widget {
+  text-align: center;
+  padding: 32px 24px;
+}
+.lk-counter {
+  display: inline-flex;
+  align-items: center;
+  
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  transition: all 0.3s;
+}
+.lk-counter.early {
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  color: #4ade80;
+}
+.lk-counter.urgent {
+  background: rgba(255, 77, 110, 0.1);
+  border: 1px solid rgba(255, 77, 110, 0.3);
+  color: #ff4d6e;
+  animation: lk-pulse 1.5s ease infinite;
+}
+.lk-counter.sold-out {
+  display: none;
+}
+@keyframes lk-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.lk-price-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.lk-price-current {
+  font-size: 52px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.lk-price-was {
+  font-size: 22px;
+  color: #555;
+  text-decoration: line-through;
+  margin-bottom: 6px;
+}
+.lk-price-tag {
+  font-size: 13px;
+  color: #888;
+  margin-top: 4px;
+}
+.lk-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 36px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background: #7c6af7;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  box-shadow: 0 0 30px rgba(124, 106, 247, 0.4);
+}
+.lk-btn:hover {
+  background: #9b8cff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(124, 106, 247, 0.5);
+}
+.lk-note {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #555;
 }
