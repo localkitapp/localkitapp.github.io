@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Changelog — LocalKit</title>
+<meta name="description" content="LocalKit version history — every update, fix and new tool added to the privacy-first browser toolkit."/>
+<style>
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+
+/* ── Tokens (match existing site) ── */
+:root{
+  --bg:      #0b0b0f;
+  --surface: #111118;
+  --border:  #1e1e2e;
+  --border2: #2a2a3e;
+  --text:    #e8e6f0;
+  --muted:   #9794b8;
+  --faint:   #4a4870;
+  --purple:  #7c6af7;
+  --purp2:   #9b8cff;
+  --teal:    #3dd9c4;
+  --green:   #4ade80;
+  --gold:    #ffd166;
+  --rose:    #f75d8a;
+  --orange:  #fb923c;
+  --sans:    system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:    'SF Mono','Fira Code',monospace;
+}
+
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--sans);line-height:1.6;
+  min-height:100vh;
+}
+
+/* ── Nav (matches existing site) ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(11,11,15,.92);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:52px;
+}
+.nav-logo{
+  font-size:15px;font-weight:700;color:var(--text);
+  text-decoration:none;letter-spacing:-.01em;
+  display:flex;align-items:center;gap:8px;
+}
+.nav-logo-sq{
+  width:22px;height:22px;background:var(--purple);
+  border-radius:5px;display:flex;align-items:center;justify-content:center;
+}
+.nav-logo-sq svg{width:11px;height:11px;}
+.nav-links{display:flex;align-items:center;gap:24px;}
+.nav-links a{
+  font-size:13px;color:var(--muted);text-decoration:none;
+  transition:color .15s;
+}
+.nav-links a:hover{color:var(--text);}
+.nav-links a.active{color:var(--text);}
+.nav-cta{
+  padding:6px 14px;background:var(--purple);
+  border-radius:7px;font-size:13px;font-weight:600;
+  color:#fff;text-decoration:none;transition:opacity .15s;
+}
+.nav-cta:hover{opacity:.88;}
+
+/* ── Page layout ── */
+.page{max-width:760px;margin:0 auto;padding:56px 24px 100px;}
+
+/* ── Page header ── */
+.page-header{margin-bottom:56px;}
+.page-eyebrow{
+  font-size:11px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--purple);
+  font-family:var(--mono);margin-bottom:12px;
+}
+.page-title{
+  font-size:clamp(30px,5vw,44px);font-weight:800;
+  color:var(--text);letter-spacing:-.03em;
+  line-height:1.1;margin-bottom:10px;
+}
+.page-sub{
+  font-size:15px;color:var(--muted);line-height:1.7;
+  max-width:520px;
+}
+
+/* ── Subscribe strip ── */
+.subscribe-strip{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:10px;margin-bottom:52px;
+}
+.sub-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--teal);flex-shrink:0;
+  animation:pulse 1.8s ease infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.sub-text{font-size:12.5px;color:var(--muted);flex:1;}
+.sub-text a{color:var(--purple);text-decoration:none;}
+.sub-text a:hover{text-decoration:underline;}
+.sub-rss{
+  padding:5px 12px;border:1px solid var(--border2);
+  border-radius:6px;font-size:11px;font-weight:600;
+  color:var(--muted);text-decoration:none;transition:all .15s;
+  white-space:nowrap;
+}
+.sub-rss:hover{border-color:var(--border2);color:var(--text);}
+
+/* ── Timeline ── */
+.timeline{position:relative;}
+.timeline::before{
+  content:'';position:absolute;
+  left:0;top:8px;bottom:0;
+  width:1px;background:var(--border);
+}
+
+.entry{
+  position:relative;
+  padding:0 0 52px 32px;
+}
+.entry:last-child{padding-bottom:0;}
+
+/* Timeline dot */
+.entry::before{
+  content:'';position:absolute;
+  left:-5px;top:8px;
+  width:11px;height:11px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--border2);
+  transition:border-color .2s;
+}
+.entry.latest::before{
+  background:var(--purple);
+  border-color:var(--purple);
+  box-shadow:0 0 0 3px rgba(124,106,247,.18);
+}
+
+/* Entry header */
+.entry-meta{
+  display:flex;align-items:center;gap:10px;
+  flex-wrap:wrap;margin-bottom:14px;
+}
+.entry-version{
+  font-size:17px;font-weight:800;color:var(--text);
+  letter-spacing:-.02em;
+}
+.version-badge{
+  padding:3px 9px;border-radius:5px;
+  font-size:10px;font-weight:700;
+  font-family:var(--mono);letter-spacing:.05em;
+}
+.vb-latest{background:rgba(124,106,247,.14);color:var(--purp2);border:1px solid rgba(124,106,247,.25);}
+.vb-major {background:rgba(61,217,196,.1); color:var(--teal);  border:1px solid rgba(61,217,196,.2);}
+.vb-minor {background:rgba(255,255,255,.05);color:var(--faint); border:1px solid var(--border2);}
+.entry-date{
+  font-size:12px;color:var(--faint);
+  font-family:var(--mono);margin-left:auto;
+}
+
+/* Change items */
+.changes{display:flex;flex-direction:column;gap:8px;}
+
+.change{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:11px 14px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:9px;transition:border-color .15s;
+}
+.change:hover{border-color:var(--border2);}
+
+.change-tag{
+  flex-shrink:0;padding:2px 8px;border-radius:5px;
+  font-size:9.5px;font-weight:700;font-family:var(--mono);
+  letter-spacing:.05em;margin-top:1px;white-space:nowrap;
+}
+.tag-new   {background:rgba(74,222,128,.1); color:var(--green);border:1px solid rgba(74,222,128,.2);}
+.tag-fix   {background:rgba(251,146,60,.1); color:var(--orange);border:1px solid rgba(251,146,60,.2);}
+.tag-improve{background:rgba(124,106,247,.1);color:var(--purp2); border:1px solid rgba(124,106,247,.2);}
+.tag-perf  {background:rgba(61,217,196,.1); color:var(--teal);  border:1px solid rgba(61,217,196,.2);}
+.tag-security{background:rgba(247,93,138,.1);color:var(--rose); border:1px solid rgba(247,93,138,.2);}
+
+.change-text{font-size:13px;color:var(--muted);line-height:1.55;}
+.change-text strong{color:var(--text);font-weight:600;}
+
+/* Section divider inside entry */
+.entry-section{
+  font-size:10px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);
+  font-family:var(--mono);margin:16px 0 8px;
+}
+
+/* Coming soon */
+.coming-soon{
+  background:var(--surface);border:1px dashed var(--border2);
+  border-radius:10px;padding:18px 20px;margin-top:52px;
+}
+.cs-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.cs-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.cs-items{display:flex;flex-wrap:wrap;gap:6px;}
+.cs-item{
+  padding:4px 12px;background:rgba(255,255,255,.04);
+  border:1px solid var(--border2);border-radius:6px;
+  font-size:12px;color:var(--faint);
+}
+
+/* ── Footer ── */
+footer{
+  border-top:1px solid var(--border);
+  padding:24px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{font-size:12px;color:var(--faint);text-decoration:none;transition:color .15s;}
+.footer-links a:hover{color:var(--muted);}
+.footer-copy{font-size:12px;color:var(--faint);}
+
+@media(max-width:600px){
+  nav{padding:0 16px;}
+  .nav-links{gap:14px;}
+  .page{padding:36px 16px 80px;}
+  .entry-date{margin-left:0;width:100%;}
+  footer{padding:20px 16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="nav-logo-sq">
+      <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round">
+        <rect x="3" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="3" y="13" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="13" width="8" height="8" rx="1.5"/>
+      </svg>
+    </div>
+    localkit
+  </a>
+  <div class="nav-links">
+    <a href="/docs.html">Docs</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/changelog.html" class="active">Changelog</a>
+  </div>
+  <a class="nav-cta" href="https://chromewebstore.google.com/detail/localkit/hbgcjifbgdlmcbdebkghdgncdcjgcfod" target="_blank">Add to Chrome</a>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+
+  <div class="page-header">
+    <div class="page-eyebrow">Version history</div>
+    <h1 class="page-title">Changelog</h1>
+    <p class="page-sub">Every update to LocalKit — new tools, improvements, and fixes. All processing stays local across every version.</p>
+  </div>
+
+  <div class="subscribe-strip">
+    <div class="sub-dot"></div>
+    <div class="sub-text">Get notified of updates — <a href="mailto:devthetoolbuilder@gmail.com?subject=LocalKit update notifications">email me</a> or watch the <a href="https://github.com/localkitapp" target="_blank">GitHub repo</a></div>
+    <a class="sub-rss" href="#">RSS ↗</a>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline">
+
+    <!-- v1.1 — LATEST (upcoming / next release placeholder) -->
+    <div class="entry latest">
+      <div class="entry-meta">
+        <span class="entry-version">v1.1.0</span>
+        <span class="version-badge vb-latest">LATEST</span>
+        <span class="entry-date">Coming soon</span>
+      </div>
+      <div class="changes">
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>Keyboard shortcut</strong> — open LocalKit from anywhere with <code style="font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;">Alt+Shift+L</code></div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>First-run onboarding</strong> — 3-step welcome tour for new users explaining tools, privacy proof, and shortcuts</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-improve">IMPROVE</span>
+          <div class="change-text"><strong>Image Compressor</strong> — AVIF output format added alongside JPEG, PNG, WebP</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-improve">IMPROVE</span>
+          <div class="change-text"><strong>PDF Merge</strong> — page count now shown on each file card before merging</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-fix">FIX</span>
+          <div class="change-text"><strong>QR Generator</strong> — WiFi QR codes now correctly encode special characters in SSID and password fields</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-fix">FIX</span>
+          <div class="change-text"><strong>Word Counter</strong> — selection word count now resets correctly when text area is cleared</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- v1.0.0 — INITIAL RELEASE -->
+    <div class="entry">
+      <div class="entry-meta">
+        <span class="entry-version">v1.0.0</span>
+        <span class="version-badge vb-major">Initial release</span>
+        <span class="entry-date">2 April 2026</span>
+      </div>
+
+      <div class="entry-section">Free tools — 6 tools shipped</div>
+      <div class="changes">
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>Screenshot</strong> — capture any browser tab as PNG or JPEG. Copy to clipboard or download. Uses Chrome <code style="font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;">captureVisibleTab</code> API. Nothing uploaded.</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>PDF Merge</strong> — combine up to 3 PDFs into one using pdf-lib running entirely in the browser. Drag-to-reorder, first-page preview, 50 MB per file limit.</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>Image Compressor</strong> — compress JPEG, PNG and WebP using Canvas API. Interactive before/after drag slider. Compression quality slider with live size preview.</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>Quick Notes</strong> — persistent scratchpad stored in localStorage. Auto-save every 600 ms, pin notes, search, word count per note. Survives browser restarts.</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>Password Generator</strong> — cryptographically secure passwords via <code style="font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;">crypto.getRandomValues</code>. Strength meter by entropy bits. 4–64 character length. 4 presets.</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>Word Counter</strong> — 11 live text statistics including words, characters, sentences, reading time, speaking time, unique words. Live platform limits for Twitter, LinkedIn, Instagram.</div>
+        </div>
+      </div>
+
+      <div class="entry-section" style="margin-top:20px;">Pro tools — 7 tools shipped ($9 one-time)</div>
+      <div class="changes">
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>QR Generator</strong> — URL, plain text, WiFi credentials, email with prefilled fields. Custom foreground/background colours. PNG and SVG export. L/M/Q/H error correction.</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>PDF Split</strong> — extract specific pages or split every page into individual files. Page range selection. All processing via pdf-lib — no upload.</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>Screenshot Annotate</strong> — full-screen canvas editor with 8 annotation tools (pen, arrow, rectangle, ellipse, text, blur/redact, highlight, select). 50-state undo/redo. Full keyboard shortcuts.</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>Image to PDF</strong> — convert multiple JPEG, PNG or WebP images into a single PDF. A4, Letter, or fit-to-image page sizing. Drag-to-reorder images before converting.</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>Image Tools</strong> — batch resize (by width, height, exact, or percent) and bulk format conversion (JPEG/PNG/WebP). Aspect ratio lock. Processes multiple images at once.</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>Text Cleaner</strong> — 20+ cleaning operations: fix smart quotes, em dashes, zero-width chars, non-ASCII, sort/dedupe/reverse lines, case conversion. 4 one-click presets for PDF, Word, email, and plain text.</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>PDF Merge Unlimited</strong> — Pro version of PDF Merge with no file count limit. Same drag-to-reorder and preview interface.</div>
+        </div>
+      </div>
+
+      <div class="entry-section" style="margin-top:20px;">Foundation</div>
+      <div class="changes">
+        <div class="change">
+          <span class="change-tag tag-security">SECURITY</span>
+          <div class="change-text">All tools verified to make <strong>zero network requests</strong> for user data — confirmed via Chrome DevTools Network tab. Third-party libraries (pdf-lib, qrcodejs, PDF.js) run entirely locally.</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>Pro license system</strong> — Gumroad-based one-time purchase. License key stored in <code style="font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;">chrome.storage.local</code>. Re-verified silently every 30 days. Pro access retained if Gumroad is unreachable.</div>
+        </div>
+        <div class="change">
+          <span class="change-tag tag-new">NEW</span>
+          <div class="change-text"><strong>Manifest V3</strong> — built on Chrome's latest extension standard with minimal permissions. Only <code style="font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;">storage</code>, <code style="font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;">tabs</code>, <code style="font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;">activeTab</code>, <code style="font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;">scripting</code>, <code style="font-family:var(--mono);font-size:11px;background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;">windows</code>.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end timeline -->
+
+  <!-- COMING NEXT -->
+  <div class="coming-soon">
+    <div class="cs-title">Considering for future releases</div>
+    <div class="cs-sub">Not committed — just things being explored. Privacy-first in all cases.</div>
+    <div class="cs-items">
+      <span class="cs-item">Color Picker</span>
+      <span class="cs-item">Base64 Encoder/Decoder</span>
+      <span class="cs-item">JSON Formatter</span>
+      <span class="cs-item">Hash Generator (MD5/SHA)</span>
+      <span class="cs-item">Unit Converter</span>
+      <span class="cs-item">Timestamp Converter</span>
+      <span class="cs-item">Regex Tester</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="/docs.html">Docs</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/changelog.html">Changelog</a>
+    <a href="mailto:devthetoolbuilder@gmail.com">Support</a>
+      <a href="changelog.html">Change log</a>
+      <a href="sitemap.xml">SiteMap</a>
+  </div>
+  <span class="footer-copy">© 2026 LocalKit · Built with no tracking, no BS</span>
+</footer>
+
+</body>
+</html>

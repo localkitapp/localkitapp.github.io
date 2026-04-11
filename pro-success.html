@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>You're Pro — LocalKit</title>
+<meta name="description" content="Thanks for purchasing LocalKit Pro. Activate your license key to unlock all 7 Pro tools."/>
+<!-- Prevent indexing of purchase confirmation page -->
+<meta name="robots" content="noindex,nofollow"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;}
+:root{
+  --bg:#0b0b0f;--surface:#111118;--border:#1e1e2e;--border2:#2a2a3e;
+  --text:#e8e6f0;--muted:#9794b8;--faint:#4a4870;
+  --purple:#7c6af7;--purp2:#9b8cff;--purp3:#5240d4;
+  --teal:#3dd9c4;--green:#4ade80;--gold:#ffd166;
+  --sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'SF Mono','Fira Code',monospace;
+}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--sans);line-height:1.6;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+
+/* NAV */
+nav{
+  background:rgba(11,11,15,.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);padding:0 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:52px;position:sticky;top:0;z-index:100;
+}
+.nav-logo{font-size:15px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;}
+.nav-logo-sq{width:22px;height:22px;background:var(--purple);border-radius:5px;display:flex;align-items:center;justify-content:center;}
+.nav-logo-sq svg{width:11px;height:11px;}
+.nav-links{display:flex;align-items:center;gap:24px;}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s;}
+.nav-links a:hover{color:var(--text);}
+
+/* CONFETTI CANVAS */
+#confetti-canvas{
+  position:fixed;inset:0;pointer-events:none;z-index:9999;
+}
+
+/* MAIN */
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;}
+
+.success-card{
+  width:100%;max-width:540px;
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 32px 80px rgba(0,0,0,.5);
+  animation:slideUp .5s cubic-bezier(.16,1,.3,1);
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* TOP GRADIENT BAR */
+.card-stripe{
+  height:4px;
+  background:linear-gradient(90deg,var(--purple),var(--teal));
+}
+
+/* HERO SECTION */
+.card-hero{
+  padding:36px 36px 28px;
+  text-align:center;
+  border-bottom:1px solid var(--border);
+  background:radial-gradient(ellipse 400px 200px at 50% 0%,rgba(124,106,247,.1) 0%,transparent 60%);
+}
+.hero-icon{
+  font-size:56px;margin-bottom:16px;display:block;
+  animation:pop .6s cubic-bezier(.34,1.56,.64,1) .2s both;
+  filter:drop-shadow(0 6px 20px rgba(124,106,247,.5));
+}
+@keyframes pop{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
+.hero-title{
+  font-size:28px;font-weight:800;color:var(--text);
+  letter-spacing:-.03em;margin-bottom:8px;
+}
+.hero-title span{color:var(--purp2);}
+.hero-sub{font-size:14px;color:var(--muted);line-height:1.6;max-width:380px;margin:0 auto;}
+
+/* PRO TOOLS UNLOCKED */
+.tools-section{padding:24px 36px;border-bottom:1px solid var(--border);}
+.section-label{
+  font-size:10px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);
+  font-family:var(--mono);margin-bottom:14px;
+}
+.tools-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+}
+.tool-item{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 12px;
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:9px;
+  animation:fadeIn .4s ease var(--delay,0s) both;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.tool-icon{font-size:18px;flex-shrink:0;}
+.tool-name{font-size:12.5px;font-weight:600;color:var(--text);}
+.tool-desc{font-size:10.5px;color:var(--faint);}
+.tool-check{
+  margin-left:auto;width:18px;height:18px;border-radius:50%;
+  background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:10px;color:var(--green);
+}
+
+/* ACTIVATION STEPS */
+.activate-section{padding:24px 36px;border-bottom:1px solid var(--border);}
+
+/* License key display */
+.license-box{
+  background:var(--bg);border:1px solid var(--border2);
+  border-radius:10px;padding:14px 16px;
+  margin-bottom:20px;
+}
+.license-label{
+  font-size:10px;font-weight:700;font-family:var(--mono);
+  color:var(--faint);letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:8px;
+}
+.license-key-row{
+  display:flex;align-items:center;gap:10px;
+}
+.license-key{
+  flex:1;font-family:var(--mono);font-size:13px;
+  color:var(--purp2);letter-spacing:.04em;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.license-key.placeholder{color:var(--faint);font-style:italic;font-size:12px;}
+.copy-btn{
+  flex-shrink:0;padding:5px 12px;
+  background:rgba(124,106,247,.15);border:1px solid rgba(124,106,247,.25);
+  border-radius:6px;font-size:11px;font-weight:700;
+  color:var(--purp2);cursor:pointer;
+  transition:all .15s;white-space:nowrap;
+  font-family:var(--sans);
+}
+.copy-btn:hover{background:rgba(124,106,247,.25);}
+.copy-btn.copied{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.25);color:var(--green);}
+.license-note{font-size:11px;color:var(--faint);margin-top:7px;line-height:1.5;}
+
+/* Activation steps */
+.steps{display:flex;flex-direction:column;gap:10px;}
+.act-step{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 14px;
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:9px;
+}
+.act-num{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--purple);color:#fff;
+  font-size:11px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+}
+.act-content{}
+.act-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.act-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.act-desc code{
+  font-family:var(--mono);font-size:11px;
+  background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px;
+  color:var(--purp2);
+}
+
+/* CTA */
+.cta-section{padding:24px 36px;}
+.cta-btn{
+  display:block;width:100%;padding:13px 20px;
+  background:linear-gradient(135deg,var(--purple),var(--purp3));
+  border-radius:10px;text-align:center;text-decoration:none;
+  font-size:15px;font-weight:800;color:#fff;
+  box-shadow:0 6px 24px rgba(124,106,247,.4);
+  transition:transform .18s,box-shadow .18s;
+  margin-bottom:10px;
+}
+.cta-btn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(124,106,247,.5);}
+.cta-sub-row{
+  display:flex;align-items:center;justify-content:center;
+  gap:16px;flex-wrap:wrap;
+}
+.cta-sub-link{
+  font-size:12px;color:var(--faint);text-decoration:none;transition:color .15s;
+}
+.cta-sub-link:hover{color:var(--muted);}
+
+/* Privacy note */
+.privacy-note{
+  display:flex;align-items:center;gap:8px;
+  padding:12px 36px;border-top:1px solid var(--border);
+  font-size:11.5px;color:var(--faint);
+}
+.privacy-note::before{content:'🔒';font-size:13px;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:18px;}
+.footer-links a{font-size:12px;color:var(--faint);text-decoration:none;transition:color .15s;}
+.footer-links a:hover{color:var(--muted);}
+.footer-copy{font-size:12px;color:var(--faint);}
+
+@media(max-width:560px){
+  nav{padding:0 16px;}
+  .card-hero{padding:28px 20px 22px;}
+  .tools-section,.activate-section,.cta-section{padding:20px;}
+  .tools-grid{grid-template-columns:1fr;}
+  .license-key{font-size:11px;}
+  footer{padding:16px;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="nav-logo-sq">
+      <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round">
+        <rect x="3" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="3" y="13" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="13" width="8" height="8" rx="1.5"/>
+      </svg>
+    </div>
+    localkit
+  </a>
+  <div class="nav-links">
+    <a href="/docs.html">Docs</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/changelog.html">Changelog</a>
+  </div>
+</nav>
+
+<main>
+  <div class="success-card">
+    <div class="card-stripe"></div>
+
+    <!-- HERO -->
+    <div class="card-hero">
+      <span class="hero-icon">🎉</span>
+      <div class="hero-title">You're <span>Pro</span> — thank you!</div>
+      <p class="hero-sub">Your $9 unlocks all 7 Pro tools permanently. No subscription, no renewal, no expiry. Here's how to activate.</p>
+    </div>
+
+    <!-- PRO TOOLS UNLOCKED -->
+    <div class="tools-section">
+      <div class="section-label">7 Pro tools now unlocked</div>
+      <div class="tools-grid">
+        <div class="tool-item" style="--delay:.05s;">
+          <div class="tool-icon">⬛</div>
+          <div><div class="tool-name">QR Generator</div><div class="tool-desc">URL, WiFi, email, text</div></div>
+          <div class="tool-check">✓</div>
+        </div>
+        <div class="tool-item" style="--delay:.1s;">
+          <div class="tool-icon">✂️</div>
+          <div><div class="tool-name">PDF Split</div><div class="tool-desc">Extract any pages</div></div>
+          <div class="tool-check">✓</div>
+        </div>
+        <div class="tool-item" style="--delay:.15s;">
+          <div class="tool-icon">✏️</div>
+          <div><div class="tool-name">Screenshot Annotate</div><div class="tool-desc">Draw, blur, highlight</div></div>
+          <div class="tool-check">✓</div>
+        </div>
+        <div class="tool-item" style="--delay:.2s;">
+          <div class="tool-icon">🖼️</div>
+          <div><div class="tool-name">Image to PDF</div><div class="tool-desc">Multiple images → PDF</div></div>
+          <div class="tool-check">✓</div>
+        </div>
+        <div class="tool-item" style="--delay:.25s;">
+          <div class="tool-icon">🔧</div>
+          <div><div class="tool-name">Image Tools</div><div class="tool-desc">Batch resize + convert</div></div>
+          <div class="tool-check">✓</div>
+        </div>
+        <div class="tool-item" style="--delay:.3s;">
+          <div class="tool-icon">🧹</div>
+          <div><div class="tool-name">Text Cleaner</div><div class="tool-desc">Strip, sort, fix encoding</div></div>
+          <div class="tool-check">✓</div>
+        </div>
+        <div class="tool-item" style="--delay:.35s;">
+          <div class="tool-icon">📄</div>
+          <div><div class="tool-name">PDF Merge Unlimited</div><div class="tool-desc">No file count limit</div></div>
+          <div class="tool-check">✓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVATION -->
+    <div class="activate-section">
+      <div class="section-label">Activate your license</div>
+
+      <!-- License key display — populated from URL params -->
+      <div class="license-box">
+        <div class="license-label">Your license key</div>
+        <div class="license-key-row">
+          <div class="license-key" id="license-display">
+            <span class="placeholder">Checking your purchase...</span>
+          </div>
+          <button class="copy-btn" id="copy-btn" onclick="copyKey()">Copy</button>
+        </div>
+        <div class="license-note" id="license-note">
+          Also sent to your email by Gumroad. Keep it somewhere safe — you'll need it if you reinstall the extension.
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="act-step">
+          <div class="act-num">1</div>
+          <div class="act-content">
+            <div class="act-title">Open the LocalKit extension</div>
+            <div class="act-desc">Click the LocalKit icon in your Chrome toolbar. If you don't see it, click the puzzle piece icon and pin LocalKit.</div>
+          </div>
+        </div>
+        <div class="act-step">
+          <div class="act-num">2</div>
+          <div class="act-content">
+            <div class="act-title">Click "Unlock Pro" or the key icon</div>
+            <div class="act-desc">Found in the bottom bar of the extension popup, or at the top of any Pro tool.</div>
+          </div>
+        </div>
+        <div class="act-step">
+          <div class="act-num">3</div>
+          <div class="act-content">
+            <div class="act-title">Paste your license key and click Activate</div>
+            <div class="act-desc">The key is verified once against Gumroad, then stored locally in <code>chrome.storage.local</code>. Nothing else is sent.</div>
+          </div>
+        </div>
+        <div class="act-step">
+          <div class="act-num">4</div>
+          <div class="act-content">
+            <div class="act-title">All 7 Pro tools are now unlocked</div>
+            <div class="act-desc">Your Pro status stays active permanently. If Gumroad is unreachable during re-verification, access is never revoked.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <a class="cta-btn" href="https://chromewebstore.google.com/detail/localkit/hbgcjifbgdlmcbdebkghdgncdcjgcfod" target="_blank">
+        Open LocalKit in Chrome →
+      </a>
+      <div class="cta-sub-row">
+        <a class="cta-sub-link" href="/docs.html">View all tool docs</a>
+        <a class="cta-sub-link" href="mailto:devthetoolbuilder@gmail.com">Need help? Email us</a>
+        <a class="cta-sub-link" href="/changelog.html">What's new</a>
+      </div>
+    </div>
+
+    <!-- PRIVACY NOTE -->
+    <div class="privacy-note">
+      Your license key is stored only in <code style="font-family:var(--mono);font-size:10.5px;background:rgba(255,255,255,.05);padding:1px 4px;border-radius:3px;">chrome.storage.local</code> on your device. We never store, log, or track who purchased.
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="/docs.html">Docs</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/changelog.html">Changelog</a>
+    <a href="mailto:devthetoolbuilder@gmail.com">Support</a>
+      <a href="changelog.html">Change log</a>
+      <a href="sitemap.xml">SiteMap</a>
+  </div>
+  <span class="footer-copy">© 2026 LocalKit · Built with no tracking, no BS</span>
+</footer>
+
+<script>
+// ── Extract license key from URL params (Gumroad passes ?license_key=xxx) ──
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const key = params.get('license_key') || params.get('key') || params.get('license');
+  const display = document.getElementById('license-display');
+
+  if (key && key.length > 4) {
+    display.innerHTML = '';
+    display.className = 'license-key';
+    display.textContent = key;
+    window._licenseKey = key;
+  } else {
+    display.innerHTML = '<span class="placeholder">Key not found in URL — check your Gumroad email</span>';
+    document.getElementById('copy-btn').disabled = true;
+    document.getElementById('copy-btn').style.opacity = '.4';
+    document.getElementById('license-note').textContent =
+      'Your license key was sent to your email by Gumroad. Copy it from there and paste it into the extension.';
+  }
+})();
+
+// ── Copy license key ──────────────────────────────────────────────────────
+function copyKey() {
+  const key = window._licenseKey;
+  if (!key) return;
+  navigator.clipboard.writeText(key).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2200);
+  });
+}
+
+// ── Confetti ──────────────────────────────────────────────────────────────
+(function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const COLORS = ['#7c6af7','#3dd9c4','#ffd166','#f75d8a','#4ade80','#9b8cff','#fff'];
+  const pieces = [];
+  const COUNT  = 90;
+
+  for (let i = 0; i < COUNT; i++) {
+    pieces.push({
+      x:    Math.random() * canvas.width,
+      y:    Math.random() * -canvas.height,
+      w:    6 + Math.random() * 8,
+      h:    10 + Math.random() * 8,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      rot:  Math.random() * 360,
+      vx:   (Math.random() - .5) * 2.5,
+      vy:   2.5 + Math.random() * 3.5,
+      vr:   (Math.random() - .5) * 6,
+      shape: Math.random() > .5 ? 'rect' : 'circle',
+    });
+  }
+
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = Math.max(0, 1 - frame / 200);
+      if (p.shape === 'rect') {
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      } else {
+        ctx.beginPath();
+        ctx.ellipse(0, 0, p.w / 2, p.h / 2, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+      p.x  += p.vx;
+      p.y  += p.vy;
+      p.rot += p.vr;
+      p.vy += .04; // gravity
+    });
+
+    frame++;
+    if (frame < 220) requestAnimationFrame(draw);
+    else canvas.remove();
+  }
+
+  // Small delay so page renders first
+  setTimeout(draw, 300);
+
+  window.addEventListener('resize', () => {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+})();
+</script>
+</body>
+</html>

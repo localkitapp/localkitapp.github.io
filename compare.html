@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>LocalKit vs Smallpdf vs ILovePDF vs Adobe — Comparison</title>
+<meta name="description" content="Compare LocalKit with Smallpdf, ILovePDF, Adobe Acrobat and TinyPNG. See which tools upload your files, require accounts, and charge monthly fees."/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;}
+:root{
+  --bg:#0b0b0f;--surface:#111118;--border:#1e1e2e;--border2:#2a2a3e;
+  --text:#e8e6f0;--muted:#9794b8;--faint:#4a4870;
+  --purple:#7c6af7;--purp2:#9b8cff;--purp3:#5240d4;
+  --teal:#3dd9c4;--green:#4ade80;--gold:#ffd166;--rose:#f75d8a;
+  --sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'SF Mono','Fira Code',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;min-height:100vh;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(11,11,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:52px;}
+.nav-logo{font-size:15px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;}
+.nav-logo-sq{width:22px;height:22px;background:var(--purple);border-radius:5px;display:flex;align-items:center;justify-content:center;}
+.nav-logo-sq svg{width:11px;height:11px;}
+.nav-links{display:flex;align-items:center;gap:24px;}
+.nav-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s;}
+.nav-links a:hover{color:var(--text);}
+.nav-cta{padding:6px 14px;background:var(--purple);border-radius:7px;font-size:13px;font-weight:600;color:#fff;text-decoration:none;transition:opacity .15s;}
+.nav-cta:hover{opacity:.88;}
+
+/* PAGE */
+.page{max-width:960px;margin:0 auto;padding:56px 24px 100px;}
+
+/* HEADER */
+.page-header{margin-bottom:52px;text-align:center;}
+.page-eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--purple);font-family:var(--mono);margin-bottom:12px;}
+.page-title{font-size:clamp(28px,5vw,46px);font-weight:800;color:var(--text);letter-spacing:-.03em;line-height:1.1;margin-bottom:12px;}
+.page-title em{font-style:normal;color:var(--purp2);}
+.page-sub{font-size:15px;color:var(--muted);line-height:1.7;max-width:560px;margin:0 auto 28px;}
+
+/* PROOF BADGE */
+.proof-banner{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:9px 18px;
+  background:rgba(61,217,196,.07);border:1px solid rgba(61,217,196,.2);
+  border-radius:10px;font-size:13px;color:var(--teal);
+  margin-bottom:52px;
+}
+.proof-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 1.6s ease infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+
+/* ── MAIN COMPARISON TABLE ── */
+.compare-wrap{overflow-x:auto;margin-bottom:48px;border-radius:14px;border:1px solid var(--border2);}
+.compare-table{width:100%;border-collapse:collapse;min-width:680px;}
+
+/* Column headers */
+.compare-table thead tr{background:var(--surface);}
+.compare-table th{
+  padding:0;border-bottom:1px solid var(--border2);
+  vertical-align:bottom;
+}
+.th-inner{padding:16px 14px 14px;}
+
+.th-empty{width:200px;min-width:160px;}
+
+.th-product{text-align:center;}
+.th-product-name{font-size:13px;font-weight:800;color:var(--text);margin-bottom:3px;}
+.th-product-sub{font-size:10.5px;color:var(--faint);}
+
+/* LocalKit column header — highlighted */
+.th-localkit{
+  background:rgba(124,106,247,.07);
+  border-left:1px solid rgba(124,106,247,.2);
+  border-right:1px solid rgba(124,106,247,.2);
+  position:relative;
+}
+.th-localkit::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--purple),var(--teal));
+}
+.th-localkit .th-product-name{color:var(--purp2);}
+
+/* Body rows */
+.compare-table tbody tr{border-bottom:1px solid var(--border);}
+.compare-table tbody tr:last-child{border-bottom:none;}
+.compare-table tbody tr:hover{background:rgba(255,255,255,.015);}
+
+/* Row category separator */
+.row-category td{
+  padding:12px 14px 6px;
+  font-size:10px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);
+  font-family:var(--mono);
+  background:rgba(255,255,255,.02);
+  border-bottom:1px solid var(--border);
+  border-top:1px solid var(--border);
+}
+
+/* Row label */
+.row-label{
+  padding:13px 14px;
+  font-size:13px;color:var(--text);font-weight:500;
+  vertical-align:middle;
+}
+.row-label-sub{font-size:11px;color:var(--faint);margin-top:2px;}
+
+/* Cell */
+td.cell{
+  padding:13px 14px;text-align:center;
+  vertical-align:middle;font-size:13px;
+}
+td.cell-lk{
+  background:rgba(124,106,247,.04);
+  border-left:1px solid rgba(124,106,247,.12);
+  border-right:1px solid rgba(124,106,247,.12);
+}
+
+/* Cell values */
+.yes { color:var(--green);  font-size:16px; }
+.no  { color:var(--rose);   font-size:16px; }
+.neutral { color:var(--faint); font-size:13px; }
+.partial { color:var(--gold);  font-size:13px; font-weight:600; }
+
+.val-good {color:var(--green); font-weight:700; font-size:12.5px;}
+.val-bad  {color:var(--rose);  font-weight:600; font-size:12.5px;}
+.val-warn {color:var(--gold);  font-weight:600; font-size:12.5px;}
+.val-muted{color:var(--faint); font-size:12.5px;}
+
+/* ── PER-TOOL COMPARISON ── */
+.tool-section{margin-bottom:48px;}
+.tool-section-title{
+  font-size:18px;font-weight:800;color:var(--text);
+  letter-spacing:-.02em;margin-bottom:6px;
+}
+.tool-section-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;max-width:600px;}
+
+.tool-compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.tc-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:16px 18px;
+  position:relative;overflow:hidden;
+}
+.tc-card.winner{
+  border-color:rgba(124,106,247,.3);
+  background:rgba(124,106,247,.05);
+}
+.tc-card.winner::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--purple),var(--teal));
+}
+.tc-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.tc-name{font-size:13px;font-weight:800;color:var(--text);}
+.tc-winner-badge{
+  padding:2px 8px;border-radius:4px;font-size:9px;font-weight:800;
+  font-family:var(--mono);background:rgba(124,106,247,.15);
+  color:var(--purp2);border:1px solid rgba(124,106,247,.25);
+}
+.tc-points{display:flex;flex-direction:column;gap:5px;}
+.tc-point{display:flex;align-items:flex-start;gap:7px;font-size:12.5px;color:var(--muted);line-height:1.45;}
+.tc-point.good::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;}
+.tc-point.bad::before{content:'✗';color:var(--rose);font-weight:700;flex-shrink:0;margin-top:1px;}
+
+/* ── PRICE COMPARISON CARDS ── */
+.price-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+  gap:10px;margin-bottom:48px;
+}
+.price-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:16px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.price-card.highlight{
+  border-color:rgba(124,106,247,.3);
+  background:rgba(124,106,247,.06);
+}
+.price-card.highlight::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--purple),var(--teal));
+}
+.pc-product{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;}
+.pc-amount{font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1;}
+.pc-period{font-size:11px;color:var(--faint);margin-top:3px;margin-bottom:8px;}
+.pc-annual{
+  font-size:11px;font-family:var(--mono);
+  padding:3px 8px;border-radius:4px;
+  display:inline-block;
+}
+.pc-annual.cheap{background:rgba(74,222,128,.1);color:var(--green);border:1px solid rgba(74,222,128,.2);}
+.pc-annual.expensive{background:rgba(247,93,138,.1);color:var(--rose);border:1px solid rgba(247,93,138,.2);}
+.pc-annual.mid{background:rgba(255,209,102,.1);color:var(--gold);border:1px solid rgba(255,209,102,.2);}
+
+/* ── CTA ── */
+.cta-section{
+  background:linear-gradient(135deg,rgba(124,106,247,.12),rgba(61,217,196,.06));
+  border:1px solid rgba(124,106,247,.2);
+  border-radius:16px;padding:36px;text-align:center;
+}
+.cta-title{font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.03em;margin-bottom:10px;}
+.cta-title em{font-style:normal;color:var(--purp2);}
+.cta-sub{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px;}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.cta-btn-primary{
+  padding:11px 24px;background:linear-gradient(135deg,var(--purple),var(--purp3));
+  border-radius:9px;text-decoration:none;font-size:14px;font-weight:700;
+  color:#fff;box-shadow:0 6px 20px rgba(124,106,247,.4);
+  transition:transform .18s,box-shadow .18s;display:inline-block;
+}
+.cta-btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(124,106,247,.5);}
+.cta-btn-ghost{
+  padding:11px 24px;border:1px solid var(--border2);
+  border-radius:9px;text-decoration:none;font-size:14px;font-weight:600;
+  color:var(--muted);transition:all .15s;display:inline-block;
+}
+.cta-btn-ghost:hover{border-color:var(--border2);color:var(--text);}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:24px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{font-size:12px;color:var(--faint);text-decoration:none;transition:color .15s;}
+.footer-links a:hover{color:var(--muted);}
+.footer-copy{font-size:12px;color:var(--faint);}
+
+@media(max-width:640px){
+  nav{padding:0 16px;}
+  .page{padding:36px 12px 80px;}
+  .tool-compare-grid{grid-template-columns:1fr;}
+  .price-grid{grid-template-columns:1fr 1fr;}
+  footer{padding:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="nav-logo-sq">
+      <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round">
+        <rect x="3" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="3" width="8" height="8" rx="1.5"/>
+        <rect x="3" y="13" width="8" height="8" rx="1.5"/>
+        <rect x="13" y="13" width="8" height="8" rx="1.5"/>
+      </svg>
+    </div>
+    localkit
+  </a>
+  <div class="nav-links">
+    <a href="/docs.html">Docs</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/changelog.html">Changelog</a>
+  </div>
+  <a class="nav-cta" href="https://chromewebstore.google.com/detail/localkit/hbgcjifbgdlmcbdebkghdgncdcjgcfod" target="_blank">Add to Chrome — Free</a>
+</nav>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="page-eyebrow">Comparison</div>
+    <h1 class="page-title">LocalKit vs <em>everyone else</em></h1>
+    <p class="page-sub">Every alternative uploads your files to their servers. LocalKit doesn't. Here's the full comparison so you can decide for yourself.</p>
+    <div class="proof-banner" style="display:inline-flex;">
+      <div class="proof-dot"></div>
+      All LocalKit claims are verifiable — open Chrome DevTools → Network tab while using any tool
+    </div>
+  </div>
+
+  <!-- ── MAIN COMPARISON TABLE ── -->
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th class="th-empty"></th>
+          <th class="th-product th-localkit">
+            <div class="th-inner">
+              <div class="th-product-name">🧩 LocalKit</div>
+              <div class="th-product-sub">localkitapp.github.io</div>
+            </div>
+          </th>
+          <th class="th-product">
+            <div class="th-inner">
+              <div class="th-product-name">Smallpdf</div>
+              <div class="th-product-sub">smallpdf.com</div>
+            </div>
+          </th>
+          <th class="th-product">
+            <div class="th-inner">
+              <div class="th-product-name">ILovePDF</div>
+              <div class="th-product-sub">ilovepdf.com</div>
+            </div>
+          </th>
+          <th class="th-product">
+            <div class="th-inner">
+              <div class="th-product-name">Adobe Acrobat</div>
+              <div class="th-product-sub">acrobat.adobe.com</div>
+            </div>
+          </th>
+          <th class="th-product">
+            <div class="th-inner">
+              <div class="th-product-name">TinyPNG</div>
+              <div class="th-product-sub">tinypng.com</div>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- PRIVACY -->
+        <tr class="row-category"><td colspan="6">Privacy &amp; Data</td></tr>
+
+        <tr>
+          <td class="row-label">Files uploaded to servers<div class="row-label-sub">Does processing happen on their servers?</div></td>
+          <td class="cell cell-lk"><span class="yes">✓</span><br><span class="val-good">Never</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Always</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Always</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Always</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Always</span></td>
+        </tr>
+
+        <tr>
+          <td class="row-label">Verifiable zero network requests<div class="row-label-sub">Can you prove it in DevTools?</div></td>
+          <td class="cell cell-lk"><span class="yes">✓</span><br><span class="val-good">Yes — DevTools</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-muted">No</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-muted">No</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-muted">No</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-muted">No</span></td>
+        </tr>
+
+        <tr>
+          <td class="row-label">Analytics &amp; tracking</td>
+          <td class="cell cell-lk"><span class="yes">✓</span><br><span class="val-good">Zero</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Yes</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Yes</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Yes</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Yes</span></td>
+        </tr>
+
+        <tr>
+          <td class="row-label">Files retained after processing<div class="row-label-sub">Do they keep a copy?</div></td>
+          <td class="cell cell-lk"><span class="yes">✓</span><br><span class="val-good">Never stored</span></td>
+          <td class="cell"><span class="val-warn">1 hour</span></td>
+          <td class="cell"><span class="val-warn">2 hours</span></td>
+          <td class="cell"><span class="val-warn">Variable</span></td>
+          <td class="cell"><span class="val-warn">Unknown</span></td>
+        </tr>
+
+        <!-- ACCOUNT -->
+        <tr class="row-category"><td colspan="6">Account &amp; Access</td></tr>
+
+        <tr>
+          <td class="row-label">Account required</td>
+          <td class="cell cell-lk"><span class="yes">✓</span><br><span class="val-good">No account</span></td>
+          <td class="cell"><span class="val-warn">Free tier: No<br>Full access: Yes</span></td>
+          <td class="cell"><span class="val-warn">Free tier: No<br>Full access: Yes</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Required</span></td>
+          <td class="cell"><span class="yes">✓</span><br><span class="val-good">No account</span></td>
+        </tr>
+
+        <tr>
+          <td class="row-label">Works offline</td>
+          <td class="cell cell-lk"><span class="yes">✓</span><br><span class="val-good">Yes — always</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Internet required</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Internet required</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Internet required</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Internet required</span></td>
+        </tr>
+
+        <!-- PRICING -->
+        <tr class="row-category"><td colspan="6">Pricing</td></tr>
+
+        <tr>
+          <td class="row-label">Free tier available</td>
+          <td class="cell cell-lk"><span class="yes">✓</span><br><span class="val-good">6 tools free</span></td>
+          <td class="cell"><span class="partial">Limited</span></td>
+          <td class="cell"><span class="partial">Limited</span></td>
+          <td class="cell"><span class="partial">Very limited</span></td>
+          <td class="cell"><span class="yes">✓</span><br><span class="val-good">Yes (slow)</span></td>
+        </tr>
+
+        <tr>
+          <td class="row-label">Paid plan cost<div class="row-label-sub">To remove all limits</div></td>
+          <td class="cell cell-lk"><span class="val-good" style="font-size:15px;font-weight:800;">$9</span><br><span class="val-good">one-time forever</span></td>
+          <td class="cell"><span class="val-bad" style="font-size:15px;font-weight:700;">$12/mo</span><br><span class="val-muted">$144/year</span></td>
+          <td class="cell"><span class="val-bad" style="font-size:15px;font-weight:700;">$9/mo</span><br><span class="val-muted">$108/year</span></td>
+          <td class="cell"><span class="val-bad" style="font-size:15px;font-weight:700;">$25/mo</span><br><span class="val-muted">$300/year</span></td>
+          <td class="cell"><span class="val-warn" style="font-size:15px;font-weight:700;">$25/mo</span><br><span class="val-muted">$300/year</span></td>
+        </tr>
+
+        <tr>
+          <td class="row-label">Subscription required</td>
+          <td class="cell cell-lk"><span class="yes">✓</span><br><span class="val-good">No subscription</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Monthly only</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Monthly only</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Monthly only</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-bad">Monthly only</span></td>
+        </tr>
+
+        <!-- TOOLS -->
+        <tr class="row-category"><td colspan="6">Tools &amp; Features</td></tr>
+
+        <tr>
+          <td class="row-label">PDF Merge</td>
+          <td class="cell cell-lk"><span class="yes">✓</span><br><span class="val-good">Free (3 files)<br>Unlimited Pro</span></td>
+          <td class="cell"><span class="partial">Limited free</span></td>
+          <td class="cell"><span class="partial">Limited free</span></td>
+          <td class="cell"><span class="yes">✓</span><br><span class="val-muted">Paid only</span></td>
+          <td class="cell"><span class="no">✗</span><br><span class="val-muted">N/A</span></td>
+        </tr>
+
+        <tr>
+          <td class="row-label">Image compression</td>
+          <td class="cell cell-lk"><span class="yes">✓</span><br><span class="val-good">Free · local</span></td>
+          <td class="cell"><span class="partial">Yes (cloud)</span></td>
+          <td class="cell"><span class="partial">Yes (cloud)</span></td>
+          <td class="cell"><span class="partial">Yes (cloud)</span></td>
+          <td class="cell"><span class="yes">✓</span><br><span class="val-warn">Cloud upload</span></td>
+        </tr>
+
+        <tr>
+          <td class="row-label">Screenshot capture</td>
+          <td class="cell cell-lk"><span class="yes">✓</span><br><span class="val-good">Free · local</span></td>
+          <td class="cell"><span class="no">✗</span></td>
+          <td class="cell"><span class="no">✗</span></td>
+          <td class="cell"><span class="no">✗</span></td>
+          <td class="cell"><span class="no">✗</span></td>
+        </tr>
+
+        <tr>
+          <td class="row-label">Password generator</td>
+          <td class="cell cell-lk"><span class="yes">✓</span><br><span class="val-good">Free · crypto secure</span></td>
+          <td class="cell"><span class="no">✗</span></td>
+          <td class="cell"><span class="no">✗</span></td>
+          <td class="cell"><span class="no">✗</span></td>
+          <td class="cell"><span class="no">✗</span></td>
+        </tr>
+
+        <tr>
+          <td class="row-label">QR Code Generator</td>
+          <td class="cell cell-lk"><span class="yes">✓</span><br><span class="val-good">Pro · local</span></td>
+          <td class="cell"><span class="no">✗</span></td>
+          <td class="cell"><span class="yes">✓</span><br><span class="val-warn">Cloud</span></td>
+          <td class="cell"><span class="no">✗</span></td>
+          <td class="cell"><span class="no">✗</span></td>
+        </tr>
+
+        <tr>
+          <td class="row-label">Total distinct tools</td>
+          <td class="cell cell-lk"><span class="val-good" style="font-size:20px;font-weight:800;">13</span></td>
+          <td class="cell"><span class="val-muted" style="font-size:18px;font-weight:700;">~21</span><br><span class="val-muted" style="font-size:10px;">all cloud</span></td>
+          <td class="cell"><span class="val-muted" style="font-size:18px;font-weight:700;">~24</span><br><span class="val-muted" style="font-size:10px;">all cloud</span></td>
+          <td class="cell"><span class="val-muted" style="font-size:18px;font-weight:700;">~15</span><br><span class="val-muted" style="font-size:10px;">all cloud</span></td>
+          <td class="cell"><span class="val-muted" style="font-size:18px;font-weight:700;">1</span><br><span class="val-muted" style="font-size:10px;">images only</span></td>
+        </tr>
+
+        <tr>
+          <td class="row-label">Where it runs</td>
+          <td class="cell cell-lk"><span class="val-good" style="font-weight:700;">Your browser<br>(Canvas, pdf-lib,<br>Web Crypto)</span></td>
+          <td class="cell"><span class="val-bad">Their servers</span></td>
+          <td class="cell"><span class="val-bad">Their servers</span></td>
+          <td class="cell"><span class="val-bad">Their servers</span></td>
+          <td class="cell"><span class="val-bad">Their servers</span></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PRICE BREAKDOWN -->
+  <h2 style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px;">What you pay over time</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">For equivalent functionality (PDF + image + annotation tools).</p>
+  <div class="price-grid">
+    <div class="price-card highlight">
+      <div class="pc-product">🧩 LocalKit Pro</div>
+      <div class="pc-amount">$9</div>
+      <div class="pc-period">once · forever</div>
+      <div class="pc-annual cheap">$0/year after that</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-product">Smallpdf</div>
+      <div class="pc-amount">$12</div>
+      <div class="pc-period">per month</div>
+      <div class="pc-annual expensive">$144/year</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-product">ILovePDF</div>
+      <div class="pc-amount">$9</div>
+      <div class="pc-period">per month</div>
+      <div class="pc-annual expensive">$108/year</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-product">Adobe Acrobat</div>
+      <div class="pc-amount">$25</div>
+      <div class="pc-period">per month</div>
+      <div class="pc-annual expensive">$300/year</div>
+    </div>
+    <div class="price-card">
+      <div class="pc-product">TinyPNG Pro</div>
+      <div class="pc-amount">$25</div>
+      <div class="pc-period">per month</div>
+      <div class="pc-annual expensive">$300/year</div>
+    </div>
+  </div>
+
+  <!-- HEAD TO HEAD -->
+  <h2 style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px;margin-top:48px;">Head to head</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Specific comparisons for users switching from each tool.</p>
+
+  <!-- vs Smallpdf -->
+  <div class="tool-section">
+    <div class="tool-section-title">LocalKit vs Smallpdf</div>
+    <div class="tool-section-sub">Smallpdf is one of the most popular PDF tools online — and one of the most aggressively monetised. Every PDF you upload goes to their servers.</div>
+    <div class="tool-compare-grid">
+      <div class="tc-card winner">
+        <div class="tc-header"><span>🧩</span><span class="tc-name">LocalKit</span><span class="tc-winner-badge">RECOMMENDED</span></div>
+        <div class="tc-points">
+          <div class="tc-point good">PDF merge, split, and unlimited merge in one $9 purchase</div>
+          <div class="tc-point good">Files never leave your browser — pdf-lib runs locally</div>
+          <div class="tc-point good">Works offline — no internet needed after install</div>
+          <div class="tc-point good">Plus 10 other tools: screenshots, passwords, QR, compress</div>
+          <div class="tc-point good">No subscription, no monthly billing, no renewal emails</div>
+        </div>
+      </div>
+      <div class="tc-card">
+        <div class="tc-header"><span class="tc-name">Smallpdf</span></div>
+        <div class="tc-points">
+          <div class="tc-point bad">Uploads all PDFs to their servers for processing</div>
+          <div class="tc-point bad">$12/month subscription — $144/year for unlimited access</div>
+          <div class="tc-point bad">Files retained on their servers for up to 1 hour</div>
+          <div class="tc-point bad">Requires account for most features</div>
+          <div class="tc-point good">More PDF tools than LocalKit (compression levels, OCR)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- vs ILovePDF -->
+  <div class="tool-section">
+    <div class="tool-section-title">LocalKit vs ILovePDF</div>
+    <div class="tool-section-sub">ILovePDF has a large free tier, but all processing happens on their servers. Your documents go through their infrastructure every single time.</div>
+    <div class="tool-compare-grid">
+      <div class="tc-card winner">
+        <div class="tc-header"><span>🧩</span><span class="tc-name">LocalKit</span><span class="tc-winner-badge">RECOMMENDED</span></div>
+        <div class="tc-points">
+          <div class="tc-point good">PDF processing via pdf-lib — pure browser, zero upload</div>
+          <div class="tc-point good">Screenshot and image tools in the same extension</div>
+          <div class="tc-point good">$9 once vs $9 every month</div>
+          <div class="tc-point good">No file size warnings or throttling on the free tier</div>
+        </div>
+      </div>
+      <div class="tc-card">
+        <div class="tc-header"><span class="tc-name">ILovePDF</span></div>
+        <div class="tc-points">
+          <div class="tc-point bad">Every file is uploaded to their servers in Spain</div>
+          <div class="tc-point bad">Files stored for 2 hours after processing</div>
+          <div class="tc-point bad">Free tier has file size limits and rate limiting</div>
+          <div class="tc-point good">More specialised PDF tools (repair, flatten, page numbers)</div>
+          <div class="tc-point good">Mobile apps available</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- vs TinyPNG -->
+  <div class="tool-section">
+    <div class="tool-section-title">LocalKit vs TinyPNG</div>
+    <div class="tool-section-sub">TinyPNG is the go-to for image compression — but every image you compress is uploaded to their servers. For personal or client photos, that's worth thinking about.</div>
+    <div class="tool-compare-grid">
+      <div class="tc-card winner">
+        <div class="tc-header"><span>🧩</span><span class="tc-name">LocalKit</span><span class="tc-winner-badge">FOR PRIVACY</span></div>
+        <div class="tc-points">
+          <div class="tc-point good">Canvas API compression — runs entirely in your browser</div>
+          <div class="tc-point good">Interactive before/after drag slider to compare quality</div>
+          <div class="tc-point good">JPEG, PNG, WebP — no file count limits</div>
+          <div class="tc-point good">No upload = faster on slow connections</div>
+        </div>
+      </div>
+      <div class="tc-card">
+        <div class="tc-header"><span class="tc-name">TinyPNG</span></div>
+        <div class="tc-points">
+          <div class="tc-point bad">Images uploaded to their servers for compression</div>
+          <div class="tc-point bad">Free tier limited to 20 images/month</div>
+          <div class="tc-point bad">$25/month for unlimited API access</div>
+          <div class="tc-point good">Superior compression algorithm (pngquant, MozJPEG)</div>
+          <div class="tc-point good">AVIF and WebP output in paid plans</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-title">Try LocalKit — <em>it's free</em></div>
+    <p class="cta-sub">6 tools free forever. 7 Pro tools for $9 once. Install in 30 seconds, no account needed.</p>
+    <div class="cta-btns">
+      <a class="cta-btn-primary" href="https://chromewebstore.google.com/detail/localkit/hbgcjifbgdlmcbdebkghdgncdcjgcfod" target="_blank">Add to Chrome — Free →</a>
+      <a class="cta-btn-ghost" href="/docs.html">View all tools</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="/">Home</a>
+    <a href="/docs.html">Docs</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/changelog.html">Changelog</a>
+    <a href="mailto:devthetoolbuilder@gmail.com">Support</a>
+      <a href="changelog.html">Change log</a>
+      <a href="sitemap.xml">SiteMap</a>
+  </div>
+  <span class="footer-copy">© 2026 LocalKit · Built with no tracking, no BS</span>
+</footer>
+
+</body>
+</html>
