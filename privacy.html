@@ -36,96 +36,115 @@
     </div>
 
     <div class="doc-body">
-
       <div class="info-box tip">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-        <div><strong>Short version:</strong> LocalKit collects no data, sends nothing to any server, and stores nothing outside your own device. Ever.</div>
-      </div>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+  <div>
+    <strong>Short version:</strong> Your files never leave your browser. No tracking. No uploads. Everything runs locally.
+  </div>
+</div>
 
-      <h2>Data collection</h2>
+<h2>Overview</h2>
+<p>LocalKit is a browser extension that provides multiple productivity tools including PDF, image, and text utilities. The core principle is <strong>local-first</strong>: everything runs directly in your browser using native web APIs.</p>
 
-      <p>LocalKit collects no personal data of any kind. There are no analytics, no crash reporting, no usage tracking and no telemetry of any kind included in this extension.</p>
+<p>Your files, text, and data are never uploaded or processed on any external server.</p>
 
-      <p>We do not know how many people use localkit, which tools they use, or anything about how the extension is used. This is a deliberate choice, not an oversight.</p>
+<h2>Data collection</h2>
+<p>LocalKit collects almost no data. Specifically:</p>
 
-      <h2>Files and content</h2>
+<ul>
+  <li>No analytics or tracking</li>
+  <li>No usage data collection</li>
+  <li>No IP address logging</li>
+  <li>No behavioral tracking</li>
+</ul>
 
-      <p>Any files you open or process with LocalKit — PDFs, images, text — are processed entirely within your browser using built-in browser APIs. No file content is transmitted to any server at any time. Files are read from your local filesystem, processed in memory, and the result is returned to you directly.</p>
+<p>The only data stored is:</p>
+<ul>
+  <li>Pro license key (stored locally)</li>
+  <li>User preferences (stored locally)</li>
+  <li>Quick Notes (stored locally)</li>
+</ul>
 
-      <h2>Permissions explained</h2>
+<h2>Files and processing</h2>
+<p>All files (PDFs, images, text) are processed entirely in your browser using built-in APIs like File API and Canvas.</p>
 
-      <table class="doc-table">
-        <thead><tr><th>Permission</th><th>Why it's needed</th><th>What we do with it</th></tr></thead>
-        <tbody>
-          <tr>
-            <td>tabs</td>
-            <td>Screenshot tool needs to list open browser tabs</td>
-            <td>Tab titles and URLs are read locally and never transmitted</td>
-          </tr>
-          <tr>
-            <td>activeTab</td>
-            <td>Capture the visible content of the active tab when you click Capture</td>
-            <td>Screenshot data stays in memory and is never uploaded</td>
-          </tr>
-          <tr>
-            <td>scripting</td>
-            <td>Required by Chrome Manifest V3 for tab capture functionality</td>
-            <td>No scripts are injected into websites</td>
-          </tr>
-          <tr>
-            <td>windows</td>
-            <td>Focus the correct browser window during screenshot capture</td>
-            <td>Window state is read locally, never stored or transmitted</td>
-          </tr>
-          <tr>
-            <td>storage</td>
-            <td>Store your Pro license key and the last active tool</td>
-            <td>Stored locally in chrome.storage.local, never sent anywhere</td>
-          </tr>
-          <tr>
-            <td>host_permissions (&lt;all_urls&gt;)</td>
-            <td>Chrome requires this for captureVisibleTab to work on any website</td>
-            <td>No page content is read. Only used for screenshot capture.</td>
-          </tr>
-        </tbody>
-      </table>
+<p><strong>No file is ever uploaded.</strong> Processing happens in memory and results are downloaded directly to your device.</p>
 
-      <h2>Local storage</h2>
+<h2>Permissions explained</h2>
 
-      <p><strong>Quick Notes</strong> uses your browser's localStorage to save notes on your device. This data never leaves your device. Clearing browser data for the extension will delete your notes.</p>
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Permission</th>
+      <th>Purpose</th>
+      <th>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>tabs</td>
+      <td>Access open tabs</td>
+      <td>Used only for screenshot feature</td>
+    </tr>
+    <tr>
+      <td>activeTab</td>
+      <td>Capture current tab</td>
+      <td>Only when user clicks capture</td>
+    </tr>
+    <tr>
+      <td>windows</td>
+      <td>Manage window focus</td>
+      <td>Used for correct capture behavior</td>
+    </tr>
+    <tr>
+      <td>storage</td>
+      <td>Store user data</td>
+      <td>Saved locally, never transmitted</td>
+    </tr>
+  </tbody>
+</table>
 
-      <p><strong>Pro license key</strong> is stored in chrome.storage.local after successful verification. It is used only to check Pro status locally — it is never transmitted except during initial Gumroad verification when you first activate.</p>
+<h2>Local storage</h2>
+<p>LocalKit uses browser storage to save:</p>
 
-      <h2>Pro license verification</h2>
+<ul>
+  <li>Tool settings</li>
+  <li>Quick Notes</li>
+  <li>Pro license status</li>
+</ul>
 
-      <p>When you activate a Pro license key, LocalKit makes a single request to Gumroad's API to verify the key. This request includes your license key and the product ID. No other information is sent. After verification, the result is cached locally and re-verified silently every 30 days.</p>
+<p>All data remains on your device and can be cleared anytime.</p>
 
-      <p>If Gumroad is unreachable during re-verification, your Pro status remains active — we never revoke access due to a network error.</p>
+<h2>Pro license verification</h2>
+<p>When activating Pro, a one-time request is sent to Gumroad to verify your license key.</p>
 
-      <h2>Third-party libraries</h2>
+<p>No other data is transmitted. After verification, everything works locally.</p>
 
-      <p>LocalKit bundles the following open-source libraries. All run locally and make no network requests:</p>
+<h2>Third-party libraries</h2>
+<p>LocalKit includes open-source libraries that run fully locally:</p>
 
-      <ul>
-        <li><strong>qrcode.min.js</strong> (qrcodejs) — QR code generation</li>
-        <li><strong>pdf-lib.min.js</strong> — PDF creation and manipulation</li>
-        <li><strong>pdf.min.js + pdf.worker.min.js</strong> (PDF.js, Mozilla) — PDF rendering and page preview</li>
-      </ul>
+<ul>
+  <li>PDF.js — PDF rendering</li>
+  <li>pdf-lib — PDF manipulation</li>
+  <li>qrcode.js — QR code generation</li>
+</ul>
 
-      <h2>This website</h2>
+<p>These libraries do not make network requests.</p>
 
-      <p>This website (localkit.app) is hosted on GitHub Pages. GitHub may collect standard server access logs (IP address, user agent, referring URL) as part of their hosting service. We do not control this and do not access these logs. See <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank">GitHub's privacy statement</a> for details.</p>
+<h2>This website</h2>
+<p>This site is hosted on GitHub Pages. GitHub may collect standard logs (IP, browser), but LocalKit does not access or use this data.</p>
 
-      <p>This website uses no analytics, no cookies and no tracking scripts.</p>
+<p>No cookies, tracking, or analytics are used.</p>
 
-      <h2>Changes to this policy</h2>
+<h2>Changes to this policy</h2>
+<p>Any updates will be reflected in the “last updated” date.</p>
 
-      <p>If this policy changes, the updated date at the top of this page will reflect the change. We will not introduce data collection without explicit notice.</p>
+<p>We will never introduce data collection without clear notice.</p>
 
-      <h2>Contact</h2>
-
-      <p>Questions about this privacy policy: <a href="mailto:devthetoolbuilder@gmail.com">support@localkit.app</a></p>
-
+<h2>Contact</h2>
+<p>For any questions: <a href="mailto:devthetoolbuilder@gmail.com">support@localkit.app</a></p>
     </div>
   </div>
 
