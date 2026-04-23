@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JSON Formatter — LocalKit Docs</title>
+  <link rel="stylesheet" href="../docs.css" />
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="https://localkitapp.github.io/index.html">localkit</a>
+  <div class="nav-links">
+    <a href="https://localkitapp.github.io/docs.html">← All tools</a>
+    <a href="https://localkitapp.github.io/compare.html">Compare</a>
+    <a href="https://localkitapp.github.io/privacy.html">Privacy</a>
+    <a href="https://chromewebstore.google.com/detail/localkit/hbgcjifbgdlmcbdebkghdgncdcjgcfod">Add to Chrome</a>
+  </div>
+</nav>
+
+<main>
+
+  <div class="tool-badge free">Free tool</div>
+
+  <p class="tool-name">JSON Formatter</p>
+
+  <h1>Format, validate and explore JSON</h1>
+
+  <p class="tool-lead">Five tabs in one — Format, Tree, Query, Convert and Diff. Paste any JSON, pretty-print with syntax highlighting, navigate the structure in a collapsible tree, run JSONPath queries, convert to YAML or CSV, and diff two JSON blobs side by side. Runs entirely in your browser.</p>
+
+  <div class="screenshot-placeholder">
+    LocalKit · JSON Formatter<br>
+    <span>JSON Formatter · 100% local · nothing uploaded</span>
+  </div>
+
+  <h2>Format tab</h2>
+
+  <p>Paste JSON into the input panel on the left. Live line numbers sync with scroll. As you type the status bar reports any parse error with the browser's exact message.</p>
+
+  <h3>Actions</h3>
+
+  <table>
+    <thead><tr><th>Button</th><th>Shortcut</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Format</td><td><code>Ctrl</code>/<code>Cmd</code> + <code>Enter</code></td><td>Pretty-print with syntax highlighting and the selected indent size.</td></tr>
+      <tr><td>Minify</td><td>—</td><td>Collapse to a single line, removing all whitespace.</td></tr>
+      <tr><td>Sort keys</td><td>—</td><td>Recursively sort all object keys A→Z.</td></tr>
+      <tr><td>Validate</td><td>—</td><td>Report whether the JSON is valid and show root type and key count.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Indent</h3>
+
+  <p>Toggle between <strong>2 spaces</strong>, <strong>4 spaces</strong> or <strong>Tab</strong> indent. The setting applies on the next Format action.</p>
+
+  <h3>Output panel</h3>
+
+  <p>The formatted output is syntax-highlighted: keys in purple, strings in green, numbers in amber, booleans in orange, null in red. Use <strong>Copy</strong> to copy output, <strong>Save</strong> to download as <code>.json</code>, or <strong>Tree →</strong> to jump straight to the Tree tab with the current JSON pre-loaded.</p>
+
+  <h3>Input controls</h3>
+
+  <p>Use <strong>Paste</strong> to paste from clipboard, <strong>Open file</strong> to load a <code>.json</code> or <code>.txt</code> file, or drop a file anywhere on the page. <strong>Clear</strong> resets both panels.</p>
+
+  <h2>Tree tab</h2>
+
+  <p>An interactive collapsible tree of the full JSON structure. Every node shows its type badge — <code>{obj}</code> for objects, <code>[arr N]</code> for arrays with item count. Hover any row to reveal two inline buttons:</p>
+
+  <ul>
+    <li><strong>📋 Copy value</strong> — copies the node's value (or the full subtree as JSON) to clipboard</li>
+    <li><strong>🔗 Copy path</strong> — copies the JSONPath string to reach this node</li>
+  </ul>
+
+  <p>The current node path is shown in the toolbar as you hover. The search box highlights all matching tree rows — parent nodes expand automatically so no result is hidden.</p>
+
+  <h2>Query tab (JSONPath)</h2>
+
+  <p>Type a JSONPath expression and press <strong>Run</strong> or <kbd>Enter</kbd>. A result count badge shows how many nodes matched.</p>
+
+  <table>
+    <thead><tr><th>Expression</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>$</code></td><td>Root element</td></tr>
+      <tr><td><code>.key</code></td><td>Child named <em>key</em></td></tr>
+      <tr><td><code>..key</code></td><td>Recursive descent — finds <em>key</em> anywhere in the tree</td></tr>
+      <tr><td><code>.*</code></td><td>All children (wildcard)</td></tr>
+      <tr><td><code>[n]</code></td><td>Array element at index n</td></tr>
+      <tr><td><code>[-1]</code></td><td>Last array element</td></tr>
+      <tr><td><code>[0:3]</code></td><td>Slice — elements 0, 1, 2</td></tr>
+      <tr><td><code>[?(@.age)]</code></td><td>Filter — items that have an <em>age</em> property</td></tr>
+      <tr><td><code>[?(@.age&gt;18)]</code></td><td>Filter with condition</td></tr>
+    </tbody>
+  </table>
+
+  <p>Click any example button in the tab to load it into the query field instantly.</p>
+
+  <h2>Convert tab</h2>
+
+  <table>
+    <thead><tr><th>Mode</th><th>Input</th><th>Output</th></tr></thead>
+    <tbody>
+      <tr><td>JSON → CSV</td><td>Array of objects</td><td>CSV with header row from object keys</td></tr>
+      <tr><td>JSON → YAML</td><td>Any valid JSON</td><td>Equivalent YAML</td></tr>
+      <tr><td>CSV → JSON</td><td>CSV (first row = headers)</td><td>Array of objects</td></tr>
+      <tr><td>Flatten JSON</td><td>Nested object</td><td>Flat object with dot-path keys e.g. <code>user.address.city</code></td></tr>
+      <tr><td>Unflatten JSON</td><td>Flat dot-path object</td><td>Restored nested structure</td></tr>
+    </tbody>
+  </table>
+
+  <p>Use <strong>Copy</strong> or <strong>Save</strong> to get the converted output. Save uses the correct file extension for each format (<code>.yaml</code>, <code>.csv</code>, <code>.json</code>).</p>
+
+  <h2>Diff tab</h2>
+
+  <p>Paste two JSON blobs into the <strong>JSON A</strong> and <strong>JSON B</strong> panels and click <strong>Diff</strong>. LocalKit performs a deep recursive diff and highlights every change:</p>
+
+  <table>
+    <thead><tr><th>Colour</th><th>Symbol</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>Green</td><td><code>+</code></td><td>Key added in B</td></tr>
+      <tr><td>Red</td><td><code>−</code></td><td>Key removed — only in A</td></tr>
+      <tr><td>Amber</td><td><code>~</code></td><td>Value changed between A and B</td></tr>
+      <tr><td>Grey</td><td></td><td>Unchanged</td></tr>
+    </tbody>
+  </table>
+
+  <p>A summary strip at the top shows total added, removed and changed counts. The diff output can be copied to clipboard.</p>
+
+  <h2>Keyboard shortcuts</h2>
+
+  <table>
+    <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td><code>Ctrl</code>/<code>Cmd</code> + <code>Enter</code></td><td>Format JSON</td></tr>
+      <tr><td><code>Ctrl</code>/<code>Cmd</code> + <code>1</code></td><td>Switch to Format tab</td></tr>
+      <tr><td><code>Ctrl</code>/<code>Cmd</code> + <code>2</code></td><td>Switch to Tree tab</td></tr>
+      <tr><td><code>Ctrl</code>/<code>Cmd</code> + <code>3</code></td><td>Switch to Query tab</td></tr>
+      <tr><td><code>Ctrl</code>/<code>Cmd</code> + <code>4</code></td><td>Switch to Convert tab</td></tr>
+      <tr><td><code>Ctrl</code>/<code>Cmd</code> + <code>5</code></td><td>Switch to Diff tab</td></tr>
+      <tr><td><code>Tab</code> in input</td><td>Insert 2 spaces (not a focus-trap)</td></tr>
+    </tbody>
+  </table>
+
+  <p>This is a <strong>free tool</strong> — available immediately after install, no upgrade needed.</p>
+
+</main>
+
+<footer>
+  <a href="https://localkitapp.github.io/index.html">Home</a>
+  <a href="https://localkitapp.github.io/docs.html">Docs</a>
+  <a href="https://localkitapp.github.io/privacy.html">Privacy</a>
+  <a href="mailto:devthetoolbuilder@gmail.com">Support</a>
+  <a href="https://localkitapp.github.io/changelog.html">Change log</a>
+  <a href="https://localkitapp.github.io/sitemap.xml">SiteMap</a>
+  <p>© 2026 Localkit</p>
+</footer>
+
+</body>
+</html>
