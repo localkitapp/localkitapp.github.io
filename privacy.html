@@ -75,15 +75,16 @@
         <td>Store your Pro license key, last active tool, and first-run onboarding state.</td>
         <td>Stored locally in <code>chrome.storage.local</code>, never sent anywhere.</td>
       </tr>
-      <tr>
-        <td><code>host_permissions</code><br><small>https://api.gumroad.com/*</small></td>
-        <td>Required to verify your Pro license key with Gumroad when you first activate.</td>
-        <td>Only your license key and product ID are sent. No file data, no browsing history, no personal information.</td>
-      </tr>
+                <tr>
+            <td>host_permissions (&lt;all_urls&gt;)</td>
+            <td>Chrome requires this for captureVisibleTab to work on any website</td>
+            <td>No page content is read. Only used for screenshot capture.</td>
+          </tr>
+
     </tbody>
   </table>
 
-  <p>LocalKit does <strong>not</strong> request <code>scripting</code> permission. No scripts are injected into any website you visit. LocalKit does <strong>not</strong> request broad host permissions (<code>&lt;all_urls&gt;</code>) — network access is restricted exclusively to <code>api.gumroad.com</code> for license verification.</p>
+  <p>LocalKit does <strong>not</strong> request <code>scripting</code> permission. No scripts are injected into any website you visit. LocalKit does <strong>not</strong> request broad host permissions (<code>&lt;all_urls&gt;</code>) — network access is restricted exclusively to screenshot capture.</p>
 
   <h2>Local storage</h2>
 
